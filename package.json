@@ -1,0 +1,29 @@
+{
+  "name": "orcaslide",
+  "version": "1.0.0",
+  "description": "Slide basico",
+  "main": "dist/source/",
+  "scripts": {
+    "build": "babel source/**.js -d dist",
+    "test": "mocha"
+  },
+  "repository": "git+https://github.com/konami12/orcaslide.git",
+  "keywords": [
+    "Slide",
+    "Orca",
+    "Slider"
+  ],
+  "author": "jorge.mendez.ortega <jorge.mendez.ortega@gmail.com> (https://github.com/konami12?tab=repositories)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/konami12/orcaslide/issues"
+  },
+  "homepage": "https://github.com/konami12/orcaslide#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "mocha-jsdom": "^1.1.0"
+  }
+}
