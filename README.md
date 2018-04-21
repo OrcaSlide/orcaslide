@@ -62,9 +62,11 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
     <div class="Wrapper__Conent">
         <!-- El conenedor de los items tiene que contar con la propiedad overflow -->
         <div class="Wrapper__Conent-items" id="swipe">
+            <!-- item -->
             <div class="Wrapper__Conent-item">
                 <img src="./img/1.png" alt="">
             </div>
+            <!-- item -->
         </div>
     </div>
     <!-- End   :  Wrapper__ConentItem -->
