@@ -46,4 +46,37 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
         time: 2,
     };
 ```
+## Estructura HTML
+
+```html
+<!-- Begin :  Wrapper -->
+<section class="Wrapper">
+
+    <!-- Begin :  Wrapper__ArrowContent -->
+    <div class="Wrapper__ArrowContent">
+        <div class="Wrapper__Arrow-previus" id="arrow_previus"></div>
+    </div>
+    <!-- End   :  Wrapper__ArrowContent -->
+
+    <!-- Begin :  Wrapper__ConentItem -->
+    <div class="Wrapper__Conent">
+        <!-- El conenedor de los items tiene que contar con la propiedad overflow -->
+        <div class="Wrapper__Conent-items" id="swipe">
+            <div class="Wrapper__Conent-item">
+                <img src="./img/1.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- End   :  Wrapper__ConentItem -->
+
+    <!-- Begin :  Wrapper__ArrowContent -->
+    <div class="Wrapper__ArrowContent">
+        <div class="Wrapper__Arrow-next" id="arrow_next"></div>
+    </div>
+    <!-- End   :  Wrapper__ArrowContent -->
+
+</section>
+<!-- End   :  Wrapper -->
+``` 
+
 
