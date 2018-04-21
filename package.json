@@ -7,7 +7,7 @@
     "build": "babel source/**.js -d dist",
     "test": "mocha"
   },
-  "repository": "git+https://github.com/konami12/orcaslide.git",
+  "repository": "git+https://github.com/konami12/orcaslide",
   "keywords": [
     "Slide",
     "Orca",
@@ -23,7 +23,6 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
-    "mocha": "^5.1.1",
-    "mocha-jsdom": "^1.1.0"
+    "mocha": "^5.1.1"
   }
 }

@@ -2,3 +2,4 @@
 # Reglas para ignorar archivos                          #
 #=======================================================#
 /node_modules
+.DS_Store
