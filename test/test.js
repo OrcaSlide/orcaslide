@@ -1,4 +1,3 @@
-const jsdom = require("mocha-jsdom");
 const expect = require("chai").expect;
 const OrcaSlide = require("..").default;
 
