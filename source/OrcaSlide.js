@@ -1,4 +1,6 @@
-class OrcaSlide {
+import Utils from "./Utils";
+
+class OrcaSlide extends Utils {
     /**
      * Genera la transicion de los sliders.
      *
@@ -44,39 +46,8 @@ class OrcaSlide {
         const { arrowNext, arrowPrevious, items } = this.configSlide;
         const DISPLAY_PREVIUS = (index > 0) ? "" : "none";
         const DISPLAY_NEXT = (items === index) ? "none" : "";
-        arrowNext.style.display = DISPLAY_NEXT;
-        arrowPrevious.style.display = DISPLAY_PREVIUS;
-    }
-
-    /**
-     * Permite ocultar y mostar un elemento.
-     *
-     * @param  {Object} element Referencia a elemento del dom.
-     *
-     * @return {void}
-     */
-    static displayToggle(element) {
-        const ELEMENT = element;
-        const DISPLAY = ELEMENT.style.display || "block";
-        ELEMENT.style.display = (DISPLAY === "block") ? "none" : "";
-    }
-
-    /**
-     * Permite realizar el movimiento del scroll.
-     *
-     * @param  {number} pixels Numero de pixeles a desplazar.
-     * @param  {Boolean} isAdd (Optiona) indica si los piexeles se agregan a la
-     *                                   cuenta actual.
-     *
-     * @return void.
-     */
-    static moveToScroll(pixels, isAdd = true) {
-        const { contentItem } = this.configSlide;
-        if (isAdd) {
-            contentItem.scrollLeft += pixels;
-        } else {
-            contentItem.scrollLeft = pixels;
-        }
+        this.displayToggle(arrowNext, DISPLAY_NEXT);
+        this.displayToggle(arrowPrevious, DISPLAY_PREVIUS);
     }
 
     // ================================================================= //
@@ -100,8 +71,14 @@ class OrcaSlide {
             position: 0,
             active: false,
         };
+
         Object.assign(this.configSlide, config);
-        this.validateConfig.setActionButton.startTouch();
+
+        this
+            .validateConfig
+            .setActionButton
+            .resizeSlide
+            .startTouch();
     }
 
     static startTouch() {
@@ -199,27 +176,25 @@ class OrcaSlide {
     }
 
     /**
-     * Permite identificar el tipo de dispositivo.
+     * Evita que al redimensionar el navegador se tengan problemas con los slides.
      *
-     * @type {string}
+     * @return self Fluent interface.
      */
-    static get isMobile() {
-        const DEVICE = (typeof navigator !== "undefined")
-            ? navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)
-            : "desktop";
-        const WIDTH_SCREEN = (typeof window !== "undefined")
-            ? window.innerWidth
-            : "1024";
-        let request = "desktop";
+    static get resizeSlide() {
+        const CONFIG = this.configSlide;
+        const ITEM = this.existFields(CONFIG, "item", null);
+        const ELEMENT = this.existFields(CONFIG, "content", null);
 
-        if (DEVICE != null) {
-            if (WIDTH_SCREEN <= 768) {
-                request = "phone";
-            } else if (WIDTH_SCREEN > 768 && WIDTH_SCREEN <= 1024) {
-                request = "tablet";
-            }
+        if (ITEM !== null && ELEMENT !== null) {
+            window.addEventListener("resize", () => {
+                this.configSlide.scrollWidth = ELEMENT.scrollWidth;
+                this.configSlide.moveTo = Math.ceil(ITEM.offsetWidth / 256);
+                this.configSlide.itemWidth = ITEM.offsetWidth;
+                const POST = ITEM.offsetWidth * this.configSlide.position;
+                this.moveToScroll(POST, false);
+            });
         }
-        return request;
+        return this;
     }
 
     /**
@@ -279,11 +254,13 @@ class OrcaSlide {
                         moveTo: Math.ceil(ITEM_WIDTH / 256),
                         scrollWidth: ELEMENT.scrollWidth || 0,
                         time: (this.configSlide.time * 1000) / 512,
+                        item: ITEM,
+                        content: ELEMENT,
                     };
                     this.configSlide.active = (NEW_CONFIG.items > 0 && NEW_CONFIG.moveTo > 0);
                     Object.assign(this.configSlide, NEW_CONFIG);
                     if (!this.configSlide.isInfinite) {
-                        this.displayToggle(this.configSlide.arrowPrevious);
+                        this.displayToggle(this.configSlide.arrowPrevious, "none");
                     }
                 }
             }
