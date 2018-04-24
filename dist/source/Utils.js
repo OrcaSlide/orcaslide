@@ -1,1 +1,118 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _createClass=function(){function a(a,b){for(var c,d=0;d<b.length;d++)c=b[d],c.enumerable=c.enumerable||!1,c.configurable=!0,"value"in c&&(c.writable=!0),Object.defineProperty(a,c.key,c)}return function(b,c,d){return c&&a(b.prototype,c),d&&a(b,d),b}}();function _classCallCheck(a,b){if(!(a instanceof b))throw new TypeError("Cannot call a class as a function")}var Utils=function(){function a(){_classCallCheck(this,a)}return _createClass(a,null,[{key:"displayToggle",value:function(a){var b=1<arguments.length&&void 0!==arguments[1]?arguments[1]:"",c=a,d=b;if(""!==b){var e=c.style.display||"block";d="block"===e?"none":""}c.style.display=d}},{key:"existFields",value:function(a,b){var c=2<arguments.length&&void 0!==arguments[2]?arguments[2]:"",d=b.split("."),e=a;return function(){return d.every(function(a){var b="undefined"!=typeof e[a];return e=e[a],b})}()?e:c}},{key:"moveToScroll",value:function(a){var b=!(1<arguments.length&&void 0!==arguments[1])||arguments[1],c=this.configSlide.contentItem;b?c.scrollLeft+=a:c.scrollLeft=a}},{key:"isMobile",get:function(){var a="undefined"==typeof navigator?"desktop":navigator.userAgent.match(/iPhone|iPad|iPod|Android/i),b="undefined"==typeof window?"1024":window.innerWidth,c="desktop";return null!=a&&(768>=b?c="phone":768<b&&1024>=b&&(c="tablet")),c}}]),a}();exports.default=Utils;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Utils = function () {
+    function Utils() {
+        _classCallCheck(this, Utils);
+    }
+
+    _createClass(Utils, null, [{
+        key: "displayToggle",
+
+        /**
+         * Permite ocultar y mostar un elemento.
+         *
+         * @param  {Object} element Referencia a elemento del dom.
+         * @param  {string} display Permite setear la propiedad display.
+         *
+         * @return {void}
+         */
+        value: function displayToggle(element) {
+            var display = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+            var ELEMENT = element;
+            var auxDisplay = display;
+
+            if (display !== "") {
+                var DISPLAY = ELEMENT.style.display || "block";
+                auxDisplay = DISPLAY === "block" ? "none" : "";
+            }
+            ELEMENT.style.display = auxDisplay;
+        }
+
+        /**
+         * Valida si un key existe dentro de un object.
+         *
+         * @param  {object} data Objeto en el que se realizara el test.
+         * @param  {string} keys Llaves a buscar.
+         * @param {any} requestDefault respuesta por defecto.
+         *
+         * @return {any}.
+         */
+
+    }, {
+        key: "existFields",
+        value: function existFields(data, keys) {
+            var requestDefault = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+
+            var KEYS = keys.split(".");
+            var objectTest = data;
+            // funcion especial
+            var VALIDATE = function VALIDATE() {
+                return KEYS.every(function (key) {
+                    var REQUEST = typeof objectTest[key] !== "undefined";
+                    objectTest = objectTest[key];
+                    return REQUEST;
+                });
+            };
+            return VALIDATE() ? objectTest : requestDefault;
+        }
+
+        /**
+         * Permite identificar el tipo de dispositivo.
+         *
+         * @type {string}
+         */
+
+    }, {
+        key: "moveToScroll",
+
+
+        /**
+         * Permite realizar el movimiento del scroll.
+         *
+         * @param  {number} pixels Numero de pixeles a desplazar.
+         * @param  {Boolean} isAdd (Optiona) indica si los piexeles se agregan a la
+         *                                   cuenta actual.
+         *
+         * @return void.
+         */
+        value: function moveToScroll(pixels) {
+            var isAdd = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+            var contentItem = this.configSlide.contentItem;
+
+            if (isAdd) {
+                contentItem.scrollLeft += pixels;
+            } else {
+                contentItem.scrollLeft = pixels;
+            }
+        }
+    }, {
+        key: "isMobile",
+        get: function get() {
+            var DEVICE = typeof navigator !== "undefined" ? navigator.userAgent.match(/iPhone|iPad|iPod|Android/i) : "desktop";
+            var WIDTH_SCREEN = typeof window !== "undefined" ? window.innerWidth : "1024";
+            var request = "desktop";
+
+            if (DEVICE != null) {
+                if (WIDTH_SCREEN <= 768) {
+                    request = "phone";
+                } else if (WIDTH_SCREEN > 768 && WIDTH_SCREEN <= 1024) {
+                    request = "tablet";
+                }
+            }
+            return request;
+        }
+    }]);
+
+    return Utils;
+}();
+
+exports.default = Utils;

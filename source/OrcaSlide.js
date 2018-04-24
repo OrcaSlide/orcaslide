@@ -88,10 +88,6 @@ class OrcaSlide extends Utils {
             items,
             itemWidth,
         } = this.configSlide;
-
-        let {
-            position,
-        } = this.configSlide;
         if (DEVICE !== "desktop") {
             let clientX = 0;
             let clientXAuxiliar = 0;
@@ -105,7 +101,6 @@ class OrcaSlide extends Utils {
                 }
                 startX = parseInt(SWIPE.clientX, 10);
             });
-
             contentItem.addEventListener("touchmove", (action) => {
                 const SWIPE = action.changedTouches[0];
                 const swipeX = parseInt(SWIPE.clientX, 10);
