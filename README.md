@@ -33,11 +33,11 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
 
 | Campo             | Tipo de dato | Valor por defecto | Descripción |
 |-------------------|:------------:|:-----------------:|-------------|
-| **arrowPrevious** | *String*     | `N/A`             | Selector referente al botón para la acción *Previus*.
-| **arrowNext**     | *String*     | `N/A`             | Selector referente al botón para la acción *Next*.
-| **contentItem**   | *String*     | `N/A`             | Selector referente al *Contenedor* de los items del Slide.
-| **isInfinite**    | *Boolean*    | `false`           | Indica si el Slide es *Finito* o *Infinito*.
-| **time**          | *Number*     | `1 = segundo`     | *Tiempo* en el que se realiza transición del Slide.
+| **arrowPrevious** | *String*     | `N/A`             | Selector referente al botón para la acción **Previus**.|
+| **arrowNext**     | *String*     | `N/A`             | Selector referente al botón para la acción **Next**.|
+| **contentItem**   | *String*     | `N/A`             | Selector referente al **Contenedor** de los items del Slide.|
+| **isInfinite**    | *Boolean*    | `false`           | Indica si el Slide es **Finito* o **Infinito**.|
+| **time**          | *Number*     | `1 = segundo`     | **Tiempo** en el que se realiza transición del Slide.|
 
 > **Nota : ** Los selectores que se necesitan utilizar dentro del Slide tienen que ser selectores como los que se utilizan en `CSS`, ya que para `JS` son compatibles al usar `querySelector`.
 
