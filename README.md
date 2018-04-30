@@ -1,6 +1,6 @@
 # Orca Slide
 
-[![OrcaSlide badge](https://img.shields.io/badge/OrcaSlide-Develop-yellow.svg)](https://greenkeeper.io/)
+[![OrcaSlide badge](https://img.shields.io/badge/OrcaSlide-Develop-yellow.svg)](https://github.com/konami12/orcaslide)
 
 [![GitHub version](https://badge.fury.io/gh/konami12%2Forcaslide.svg)](https://badge.fury.io/gh/konami12%2Forcaslide)
 
