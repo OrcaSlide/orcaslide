@@ -1,43 +1,53 @@
 # Orca Slide
 
-*OrcaSlide* es un slider básico creado con JS nativo, el propósito de este paquete es evitar el uso de 
-librerias qua a futuro generan problemas de compatibilidad entre otras librarías, también evitar el uso
-de una estructura html definida por la librería que se utiliza.
+[![OrcaSlide badge](https://img.shields.io/badge/OrcaSlide-Develop-yellow.svg)](https://github.com/konami12/orcaslide)
 
-## Instalacion
+[![GitHub version](https://badge.fury.io/gh/konami12%2Forcaslide.svg)](https://badge.fury.io/gh/konami12%2Forcaslide)
+
+
+*OrcaSlide* Un Slider básico creado con JS nativo. El propósito de este desarrollo es evitar el uso de
+librerías qua a futuro causan problemas de compatibilidad al tener que convivir con otros paquetes o funcionalidades y evitar la imposición de una estrucura HTML que difiera de tu proyecto.
+
+##  💾 Instalación
+
+Se puede instalar desde NPM o Yarn:
+
+[![NPM Install](https://img.shields.io/badge/Install-NPM-brightgreen.svg)](https://www.npmjs.com/)
 
 ```
 npm i orcaslide
 ```
-o 
+o
+
+[![Yarn Install](https://img.shields.io/badge/Install-Yarn-blue.svg)](https://yarnpkg.com/en/)
 
 ```
 yarn add orcaslide
 ```
 
-## Uso
+## ⚙️ Uso
 
 Para utilizar *OrcaSlide* es necesario conocer las posibles configuraciones básicas de las que dispone
 el paquete, a futuro se tiene contemplado permitir el manejo de más configuraciones y opciones.
 
 
-| Campo             | tipo de dato | Valor por defecto | Descripción |
+| Campo             | Tipo de dato | Valor por defecto | Descripción |
 |-------------------|:------------:|:-----------------:|-------------|
-| **arrowPrevious** | *String*     | `N/A`             | Selector referente al boton para la accion Previus.
-| **arrowNext**     | *String*     | `N/A`             | Selector referente al boton para la accion next. 
-| **contentItem**   | *String*     | `N/A`             | Selector referente al contenedor de los items del slide.
-| **isInfinite**    | *Boolean*    | `false`           | Indica si el slide es finito o infinito.
-| **time**          | *Number*     | `1 = segundo`     | Tiempo en el que se realiza transición del slide. 
+| **arrowPrevious** | *String*     | `N/A`             | Selector referente al botón para la acción **Previus**.|
+| **arrowNext**     | *String*     | `N/A`             | Selector referente al botón para la acción **Next**.|
+| **contentItem**   | *String*     | `N/A`             | Selector referente al **Contenedor** de los items del Slide.|
+| **isInfinite**    | *Boolean*    | `false`           | Indica si el Slide es **Finito** o **Infinito**.|
+| **time**          | *Number*     | `1 = segundo`     | **Tiempo** en el que se realiza transición del Slide.|
 
-> **Nota : ** los selectores que se necesitan utilizar dentro del slide tienen que ser selectores como los que se utilizan en `CSS`, ya que para `JS` son compatibles al usar `querySelector`.
+> **Nota:** Los selectores que se necesitan utilizar dentro del Slide tienen que ser selectores como los que se utilizan en `CSS`, ya que para `JS` son compatibles al usar `querySelector`.
 
-## Ejemplo
+## 💡 Ejemplo
 
 ```javascript
-    // carga del paquete
-    import OrcaSlide from "orcalide";
-    
-    // seteo de la configuracion e inicialización
+    // Carga del paquete
+    import OrcaSlide from "orcaslide";
+
+    // Seteo de la configuración e inicialización
     OrcaSlide.config = {
         arrowPrevious: "#arrow_previus",
         arrowNext: "#arrow_next",
@@ -46,39 +56,88 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
         time: 2,
     };
 ```
-## Estructura HTML
+## 🚧 Estructura HTML
+
+Nuestra estructura básica de HTML para correr el OrcaSlider consta de las siguientes partes:
+
+| Elementos | Descripción |
+|----------:|-------------|
+|**Slider:**| Es el componente que contendrá la lógica y los elementos básicos necesarios para la funcionalidad del Slider.|
+|**Flechas/Botones:**| Son los elementos que reciben los eventos para recorrer los Items/Cards en el Track.|
+|**Contenedor:**| Este elemento es el que mantiene al Track y sus Items en posición.|
+|**Track/Riel:**| Este bloque al ser contenedor directo de los items, siempre deberá contar con una propiedad de ```overflow: hidden;```.|
+|**Items:**| También conocidos como Cards o Unicades Mínimas, son los contenedores de otros elementos de interacción; botones, enlances, texto, imágenes.|
+|**Icons:**| Se tienen contemplados los espacios para poder pasar mediante estilos cualquier icono que recida en una tipografía.|
+|**Card:**| Es el área destinada a contener título, texto y/o algún elemento extra de identidad.|
+|**Controls/Indicadores:**| Son la referencia visual y funcional que le permiten saber al usuario cuantos slides tiene el slider y/o saltar de uno a otro dependiendo sus necesidades.|
 
 ```html
-<!-- Begin :  Wrapper -->
-<section class="Wrapper">
 
-    <!-- Begin :  Wrapper__ArrowContent -->
-    <div class="Wrapper__ArrowContent">
-        <div class="Wrapper__Arrow-previus" id="arrow_previus"></div>
-    </div>
-    <!-- End   :  Wrapper__ArrowContent -->
+<!-- Slider -->
+<section class="Slider">
 
-    <!-- Begin :  Wrapper__ConentItem -->
-    <div class="Wrapper__Conent">
-        <!-- El conenedor de los items tiene que contar con la propiedad overflow -->
-        <div class="Wrapper__Conent-items" id="swipe">
-            <!-- item -->
-            <div class="Wrapper__Conent-item">
-                <img src="./img/1.png" alt="">
-            </div>
-            <!-- item -->
-        </div>
-    </div>
-    <!-- End   :  Wrapper__ConentItem -->
+    <!-- Previous Arrow -->
 
-    <!-- Begin :  Wrapper__ArrowContent -->
-    <div class="Wrapper__ArrowContent">
-        <div class="Wrapper__Arrow-next" id="arrow_next"></div>
-    </div>
-    <!-- End   :  Wrapper__ArrowContent -->
+    <div class="Slider__ArrowPrevious">
 
-</section>
-<!-- End   :  Wrapper -->
-``` 
+        <!-- Button | Arrow -->
+
+        <button class="Icon" id="arrow_previus">
+            <span class="Display">Previous Arrow</span>
+        </button><!-- /Button | Arrow -->
+
+    </div><!-- /Previous Arrow -->
+
+    <!-- Content -->
+
+    <div class="Slider__Content">
+
+        <!-- Track -->
+
+        <div class="Slider__Track" id="swipe">
+
+            <!-- Item | Card | Unidad Mínima -->
+
+            <div class="Card">
+
+                <!-- Card Content -->
+
+                <img class="Card__Image" src="./img/1.png" alt="My Wonderful Image">
+
+                <!-- /Card Content -->
+
+            </div><!-- /Item | Card | Unidad Mínima -->
+
+        </div><!-- /Track -->
+
+    </div><!-- /Content -->
+
+    <!-- Next Arrow -->
+
+    <div class="Slider__ArrowNext">
+
+        <!-- Button | Arrow -->
+
+        <button class="Icon" id="arrow_next">
+            <span class="Display">Next Arrow</span>
+        </button><!-- Button | Arrow -->
+
+    </div><!-- /Next Arrow -->
+
+</section><!-- /Slider -->
+
+```
+
+## 🌎 Team
+
+<center>
+
+| | | |
+|:------------:|:------------:|:------------:|
+|[<img src="https://avatars1.githubusercontent.com/u/3249830?s=460&v=4" width="100px;"/><br /><sub><b>Jorge (Konami12)</b></sub>](https://github.com/konami12)<br />             |[<img src="https://avatars3.githubusercontent.com/u/1319384?s=460&v=4" width="100px;"/><br /><sub><b>Shannonbit (Shannonbit)</b></sub>](https://github.com/shannonbit)<br />               |[<img src="https://avatars3.githubusercontent.com/u/946126?s=460&v=4" width="100px;"/><br /><sub><b>Alan Mena (Kolibri)</b></sub>](https://github.com/the-kolibri)<br />             |
+| | | | |
+
+</center>
 
 
+[![Readme Version](https://img.shields.io/badge/Readme-v0.0.1-red.svg)](https://github.com/the-kolibri)
