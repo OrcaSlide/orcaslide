@@ -130,11 +130,14 @@ Nuestra estructura básica de HTML para correr el OrcaSlider consta de las sigui
 
 ## 🌎 Team
 
+<center>
+
 | | | |
 |:------------:|:------------:|:------------:|
 |[<img src="https://avatars1.githubusercontent.com/u/3249830?s=460&v=4" width="100px;"/><br /><sub><b>Jorge (Konami12)</b></sub>](https://github.com/konami12)<br />             |[<img src="https://avatars3.githubusercontent.com/u/1319384?s=460&v=4" width="100px;"/><br /><sub><b>Shannonbit (Shannonbit)</b></sub>](https://github.com/shannonbit)<br />               |[<img src="https://avatars3.githubusercontent.com/u/946126?s=460&v=4" width="100px;"/><br /><sub><b>Alan Mena (Kolibri)</b></sub>](https://github.com/the-kolibri)<br />             |
 | | | | |
 
+</center>
 
 
 [![Readme Version](https://img.shields.io/badge/Readme-v0.0.1-red.svg)](https://github.com/the-kolibri)
