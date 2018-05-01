@@ -2,7 +2,7 @@
 
 [![OrcaSlide badge](https://img.shields.io/badge/OrcaSlide-Develop-yellow.svg)](https://github.com/konami12/orcaslide)
 
-[![GitHub version](https://badge.fury.io/gh/konami12%2Forcaslide.svg)](https://badge.fury.io/gh/konami12%2Forcaslide)
+[![GitHub version](https://badge.fury.io/gh/konami12%2Forcaslide@2x.png)](https://badge.fury.io/gh/konami12%2Forcaslide)
 
 
 *OrcaSlide* Un Slider básico creado con JS nativo. El propósito de este desarrollo es evitar el uso de
