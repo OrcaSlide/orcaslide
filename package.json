@@ -13,7 +13,9 @@
   "keywords": [
     "Slide",
     "Orca",
-    "Slider"
+    "Slider",
+    "swipe"
+    "touch"
   ],
   "author": "jorge.mendez.ortega <jorge.mendez.ortega@gmail.com> (https://github.com/konami12?tab=repositories)",
   "license": "MIT",
