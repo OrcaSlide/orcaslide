@@ -1,5 +1,24 @@
 class Utils {
     /**
+     * Permite agregar eventos a elementos de la interfaz.
+     *
+     * @param  {object} button Referencia a elemento del dom.
+     * @param  {function} callbacks Funciones a ejecutar.
+     * @param  {String} (Optional) Tipo de accion.
+     *
+     * @return {void}
+     */
+    static actionButton(button, callbacks = null, evento = "click") {
+        if (button) {
+            button.addEventListener(evento, () => {
+                if (typeof callbacks === "function") {
+                    callbacks();
+                }
+            });
+        }
+    }
+
+    /**
      * Permite ocultar y mostar un elemento.
      *
      * @param  {Object} element Referencia a elemento del dom.
@@ -42,6 +61,20 @@ class Utils {
     }
 
     /**
+     * Permite conseguir un elemento del dom identificando si esta vacio o existe.
+     * @param  {String} (Optional) Selector referente al elemento del dom.
+     *
+     * @return {object}.
+     */
+    static getElementDom(selector = "") {
+        let domElement = null;
+        if (selector) {
+            domElement = document.querySelector(selector) || domElement;
+        }
+        return domElement;
+    }
+
+    /**
      * Permite identificar el tipo de dispositivo.
      *
      * @type {string}
@@ -69,8 +102,7 @@ class Utils {
      * Permite realizar el movimiento del scroll.
      *
      * @param  {number} pixels Numero de pixeles a desplazar.
-     * @param  {Boolean} isAdd (Optiona) indica si los piexeles se agregan a la
-     *                                   cuenta actual.
+     * @param  {Boolean} isAdd (Optional) indica si los piexeles se agregan a la cuenta actual.
      *
      * @return void.
      */
