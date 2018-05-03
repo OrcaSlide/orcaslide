@@ -1,12 +1,12 @@
 {
   "name": "orcaslide",
-  "version": "0.3.2",
+  "version": "0.4.2",
   "description": "Slide basico",
   "main": "dist/source/",
   "scripts": {
     "minifyjs": "minify ./dist/source/ -d dist/source ",
     "build": "babel source/**.js -d dist",
-    "postpublish": "npm run build && npm run minify",
+    "prepublishOnly": "mocha && npm run build && npm run minify",
     "test": "mocha"
   },
   "repository": "git+https://github.com/konami12/orcaslide",

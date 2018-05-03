@@ -4,7 +4,7 @@ class OrcaSlide extends Utils {
     /**
      * Genera la transicion de los sliders.
      *
-     * @param  {Boolean} isNext Optional indica el tipo de accion.
+     * @param  {Boolean} isNext (Optional) indica el tipo de accion.
      *
      * @return void.
      */
@@ -12,26 +12,54 @@ class OrcaSlide extends Utils {
         const {
             active,
             itemWidth,
+            items,
             moveTo,
             time,
+            position,
+            isInfinite,
         } = this.configSlide;
 
         const MOVE_TO = (isNext) ? moveTo : -moveTo;
+        const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
+        const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
 
         if (active) {
-            this.configSlide.position += (isNext) ? 1 : -1;
-            this.configSlide.active = false;
-            let counter = 0;
-            const TIMER = setInterval(() => {
-                this.moveToScroll(MOVE_TO);
-                counter += moveTo;
-                if (counter >= itemWidth) {
-                    clearInterval(TIMER);
-                    const FULL_MOVE_TO = itemWidth * this.configSlide.position;
-                    this.moveToScroll(FULL_MOVE_TO, false);
-                    this.configSlide.active = true;
-                }
-            }, time);
+            if (isInfinite && INFINITE) {
+                this.isInfinite = ACTUAL_POSITION;
+            } else {
+                this.configSlide.position += (isNext) ? 1 : -1;
+                this.configSlide.active = false;
+                this.isInfinite = ACTUAL_POSITION;
+                let counter = 0;
+                const TIMER = setInterval(() => {
+                    this.moveToScroll(MOVE_TO);
+                    counter += moveTo;
+                    if (counter >= itemWidth) {
+                        clearInterval(TIMER);
+                        const FULL_MOVE_TO = itemWidth * this.configSlide.position;
+                        this.moveToScroll(FULL_MOVE_TO, false);
+                        this.configSlide.active = true;
+                    }
+                }, time);
+            }
+        }
+    }
+
+    /**
+     * Permite el manejo de la accion autoPlay.
+     *
+     * @param  {Boolean} (Optional) Indica si el carousel esten autoPlay.
+     * @return {void}.
+     */
+    static autoPlay(play = true) {
+        this.configSlide.autoPlay = play;
+        const { autoPlay, timeAutoPlay } = this.configSlide;
+        if (!play && !autoPlay) {
+            clearInterval(this.autoPlayTimer);
+        } else if (play && autoPlay) {
+            this.autoPlayTimer = setInterval(() => {
+                this.animateSlide();
+            }, timeAutoPlay);
         }
     }
 
@@ -43,11 +71,20 @@ class OrcaSlide extends Utils {
      * @return {void}
      */
     static displayArrow(index) {
-        const { arrowNext, arrowPrevious, items } = this.configSlide;
+        const {
+            autoPlay,
+            arrowNext,
+            arrowPrevious,
+            items,
+            isInfinite,
+        } = this.configSlide;
         const DISPLAY_PREVIUS = (index > 0) ? "" : "none";
         const DISPLAY_NEXT = (items === index) ? "none" : "";
         this.displayToggle(arrowNext, DISPLAY_NEXT);
         this.displayToggle(arrowPrevious, DISPLAY_PREVIUS);
+        if (autoPlay && !isInfinite && DISPLAY_NEXT === "none") {
+            this.autoPlay(false);
+        }
     }
 
     // ================================================================= //
@@ -65,13 +102,17 @@ class OrcaSlide extends Utils {
         this.configSlide = {
             arrowNext: "",
             arrowPrevious: "",
+            autoPlay: false,
             contentItem: "",
+            ctrlStop: "",
+            ctrlPlay: "",
             time: 1,
+            timeAutoPlay: 2,
             isInfinite: false,
             position: 0,
             active: false,
         };
-
+        this.autoPlayTimer = null;
         Object.assign(this.configSlide, config);
 
         this
@@ -79,8 +120,15 @@ class OrcaSlide extends Utils {
             .setActionButton
             .resizeSlide
             .startTouch();
+
+        if (this.configSlide.autoPlay) this.autoPlay();
     }
 
+    /**
+     * Se innicializa el evento touch.
+     *
+     * @return {void} [description]
+     */
     static startTouch() {
         const DEVICE = this.isMobile;
         const { contentItem, items } = this.configSlide;
@@ -102,8 +150,10 @@ class OrcaSlide extends Utils {
                 }
 
                 if (direction === "left" && this.configSlide.position < items) {
+                    this.autoPlay(false);
                     this.animateSlide(true);
                 } else if (direction === "right" && this.configSlide.position > 0) {
+                    this.autoPlay(false);
                     this.animateSlide(false);
                 }
             });
@@ -168,21 +218,27 @@ class OrcaSlide extends Utils {
         const KEYS = [
             "arrowNext",
             "arrowPrevious",
+            "ctrlStop",
+            "ctrlPlay",
         ];
         KEYS.forEach((button) => {
-            const IS_NEXT = (button === "arrowNext");
             const BUTTON = this.configSlide[button];
-            BUTTON.addEventListener("click", () => {
-                const { items } = this.configSlide;
-                let { position } = this.configSlide;
-                position += (IS_NEXT) ? 1 : -1;
-                if (position >= 0 && position <= items) {
+            const IS_PLAY = (button === "ctrlPlay");
+            const IS_NEXT = (button === "arrowNext");
+            let callbacks = () => {};
+
+            if (button.includes("ctrl")) {
+                callbacks = () => {
+                    this.autoPlay(IS_PLAY);
+                };
+                this.actionButton(BUTTON, callbacks);
+            } else {
+                callbacks = () => {
                     this.animateSlide(IS_NEXT);
-                    this.isInfinite = position;
-                } else if (items < position || position < 0) {
-                    this.isInfinite = position;
-                }
-            });
+                    this.autoPlay(false);
+                };
+                this.actionButton(BUTTON, callbacks);
+            }
         });
         return this;
     }
@@ -203,7 +259,7 @@ class OrcaSlide extends Utils {
 
         KEYS.forEach((item) => {
             const SELECTOR = this.configSlide[item];
-            const ELEMENT = document.querySelector(SELECTOR);
+            const ELEMENT = this.getElementDom(SELECTOR);
 
             if (ELEMENT) {
                 this.configSlide[item] = ELEMENT;
@@ -227,6 +283,25 @@ class OrcaSlide extends Utils {
                 }
             }
         });
+        return this.validateConfigAutoPlay;
+    }
+
+    static get validateConfigAutoPlay() {
+        const {
+            active,
+            ctrlPlay,
+            ctrlStop,
+            timeAutoPlay,
+        } = this.configSlide;
+
+        if (active) {
+            const CONFIG = {
+                timeAutoPlay: (timeAutoPlay * 1000),
+                ctrlPlay: this.getElementDom(ctrlPlay),
+                ctrlStop: this.getElementDom(ctrlStop),
+            };
+            Object.assign(this.configSlide, CONFIG);
+        }
         return this;
     }
 }
