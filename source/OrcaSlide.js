@@ -12,26 +12,36 @@ class OrcaSlide extends Utils {
         const {
             active,
             itemWidth,
+            items,
             moveTo,
             time,
+            position,
+            isInfinite,
         } = this.configSlide;
 
         const MOVE_TO = (isNext) ? moveTo : -moveTo;
+        const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
+        const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
 
         if (active) {
-            this.configSlide.position += (isNext) ? 1 : -1;
-            this.configSlide.active = false;
-            let counter = 0;
-            const TIMER = setInterval(() => {
-                this.moveToScroll(MOVE_TO);
-                counter += moveTo;
-                if (counter >= itemWidth) {
-                    clearInterval(TIMER);
-                    const FULL_MOVE_TO = itemWidth * this.configSlide.position;
-                    this.moveToScroll(FULL_MOVE_TO, false);
-                    this.configSlide.active = true;
-                }
-            }, time);
+            if (isInfinite && INFINITE) {
+                this.isInfinite = ACTUAL_POSITION;
+            } else {
+                this.configSlide.position += (isNext) ? 1 : -1;
+                this.configSlide.active = false;
+                this.isInfinite = ACTUAL_POSITION;
+                let counter = 0;
+                const TIMER = setInterval(() => {
+                    this.moveToScroll(MOVE_TO);
+                    counter += moveTo;
+                    if (counter >= itemWidth) {
+                        clearInterval(TIMER);
+                        const FULL_MOVE_TO = itemWidth * this.configSlide.position;
+                        this.moveToScroll(FULL_MOVE_TO, false);
+                        this.configSlide.active = true;
+                    }
+                }, time);
+            }
         }
     }
 
@@ -81,6 +91,11 @@ class OrcaSlide extends Utils {
             .startTouch();
     }
 
+    /**
+     * Se innicializa el evento touch.
+     *
+     * @return {void} [description]
+     */
     static startTouch() {
         const DEVICE = this.isMobile;
         const { contentItem, items } = this.configSlide;
@@ -173,15 +188,7 @@ class OrcaSlide extends Utils {
             const IS_NEXT = (button === "arrowNext");
             const BUTTON = this.configSlide[button];
             BUTTON.addEventListener("click", () => {
-                const { items } = this.configSlide;
-                let { position } = this.configSlide;
-                position += (IS_NEXT) ? 1 : -1;
-                if (position >= 0 && position <= items) {
-                    this.animateSlide(IS_NEXT);
-                    this.isInfinite = position;
-                } else if (items < position || position < 0) {
-                    this.isInfinite = position;
-                }
+                this.animateSlide(IS_NEXT);
             });
         });
         return this;
