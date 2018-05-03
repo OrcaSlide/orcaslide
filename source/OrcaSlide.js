@@ -1,5 +1,8 @@
 import Utils from "./Utils";
-
+/**
+ * [OrcaSlide description]
+ * @extends Utils
+ */
 class OrcaSlide extends Utils {
     /**
      * Genera la transicion de los sliders.
