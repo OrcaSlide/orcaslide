@@ -35,9 +35,13 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
 |-------------------|:------------:|:-----------------:|-------------|
 | **arrowPrevious** | *String*     | `N/A`             | Selector referente al botón para la acción **Previus**.|
 | **arrowNext**     | *String*     | `N/A`             | Selector referente al botón para la acción **Next**.|
+| **autoPlay**      | *Boolean*    | `false`           | Permite indicar si el slider cuenta con **autoplay**|
 | **contentItem**   | *String*     | `N/A`             | Selector referente al **Contenedor** de los items del Slide.|
+| **ctrlStop**      | *String*     | `N/a`             | Selector referente al botón para la acción detener el **autoPlay**|
+| **ctrlPlay**      | *String*     | `N/a`             | Selector referente al botón para la acción reiniciar el **autPlay**|
 | **isInfinite**    | *Boolean*    | `false`           | Indica si el Slide es **Finito** o **Infinito**.|
 | **time**          | *Number*     | `1 = segundo`     | **Tiempo** en el que se realiza transición del Slide.|
+| **timeAutoPlay**  | *Number*     | `1 = segundo`     |  **Tiempo** en el que se pasa automática al siguiente Slide.|
 
 > **Nota:** Los selectores que se necesitan utilizar dentro del Slide tienen que ser selectores como los que se utilizan en `CSS`, ya que para `JS` son compatibles al usar `querySelector`.
 
@@ -51,9 +55,12 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
     OrcaSlide.config = {
         arrowPrevious: "#arrow_previus",
         arrowNext: "#arrow_next",
+        ctrlStop: "#stop",
+        ctrlPlay: "#play",
         contentItem: "#swipe",
+        time: 1,
+        timeAutoPlay: 2.5,
         isInfinite: true,
-        time: 2,
     };
 ```
 ## 🚧 Estructura HTML
@@ -61,15 +68,15 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
 Nuestra estructura básica de HTML para correr el OrcaSlider consta de las siguientes partes:
 
 | Elementos | Descripción |
-|----------:|-------------|
-|**Slider:**| Es el componente que contendrá la lógica y los elementos básicos necesarios para la funcionalidad del Slider.|
-|**Flechas/Botones:**| Son los elementos que reciben los eventos para recorrer los Items/Cards en el Track.|
-|**Contenedor:**| Este elemento es el que mantiene al Track y sus Items en posición.|
-|**Track/Riel:**| Este bloque al ser contenedor directo de los items, siempre deberá contar con una propiedad de ```overflow: hidden;```.|
-|**Items:**| También conocidos como Cards o Unicades Mínimas, son los contenedores de otros elementos de interacción; botones, enlances, texto, imágenes.|
-|**Icons:**| Se tienen contemplados los espacios para poder pasar mediante estilos cualquier icono que recida en una tipografía.|
-|**Card:**| Es el área destinada a contener título, texto y/o algún elemento extra de identidad.|
-|**Controls/Indicadores:**| Son la referencia visual y funcional que le permiten saber al usuario cuantos slides tiene el slider y/o saltar de uno a otro dependiendo sus necesidades.|
+|----------|-------------|
+|**Slider**| Es el componente que contendrá la lógica y los elementos básicos necesarios para la funcionalidad del Slider.|
+|**Flechas/Botones**| Son los elementos que reciben los eventos para recorrer los Items/Cards en el Track.|
+|**Contenedor**| Este elemento es el que mantiene al Track y sus Items en posición.|
+|**Track/Riel**| Este bloque al ser contenedor directo de los items, siempre deberá contar con una propiedad de ```overflow: hidden;```.|
+|**Items**| También conocidos como Cards o Unicades Mínimas, son los contenedores de otros elementos de interacción; botones, enlances, texto, imágenes.|
+|**Icons**| Se tienen contemplados los espacios para poder pasar mediante estilos cualquier icono que recida en una tipografía.|
+|**Card**| Es el área destinada a contener título, texto y/o algún elemento extra de identidad.|
+|**Controls/Indicadores**| Son la referencia visual y funcional que le permiten saber al usuario cuantos slides tiene el slider y/o saltar de uno a otro dependiendo sus necesidades.|
 
 ```html
 
