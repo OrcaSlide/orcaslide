@@ -42,6 +42,7 @@ class OrcaSlide extends Utils {
                     }
                 }, time);
             }
+<<<<<<< HEAD
         }
     }
 
@@ -60,6 +61,8 @@ class OrcaSlide extends Utils {
             this.autoPlayTimer = setInterval(() => {
                 this.animateSlide();
             }, timeAutoPlay);
+=======
+>>>>>>> d4b3bc9f591ee9f8ccbd71da54fcdcb2521553a8
         }
     }
 
