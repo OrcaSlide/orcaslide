@@ -6,7 +6,7 @@
   "scripts": {
     "minifyjs": "minify ./dist/source/ -d dist/source ",
     "build": "babel source/**.js -d dist",
-    "postpublish": "npm run build && npm run minify",
+    "prepublishOnly": "mocha && npm run build && npm run minify",
     "test": "mocha"
   },
   "repository": "git+https://github.com/konami12/orcaslide",
