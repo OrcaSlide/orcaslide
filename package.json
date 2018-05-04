@@ -1,6 +1,6 @@
 {
   "name": "orcaslide",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Slide basico",
   "main": "dist/source/",
   "scripts": {

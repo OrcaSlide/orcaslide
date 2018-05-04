@@ -259,7 +259,6 @@ class OrcaSlide extends Utils {
             "arrowPrevious",
             "contentItem",
         ];
-
         KEYS.forEach((item) => {
             const SELECTOR = this.configSlide[item];
             const ELEMENT = this.getElementDom(SELECTOR);
@@ -272,7 +271,7 @@ class OrcaSlide extends Utils {
                     const NEW_CONFIG = {
                         items: ELEMENT.children.length - 1,
                         itemWidth: ITEM_WIDTH,
-                        moveTo: Math.ceil(ITEM_WIDTH / 256),
+                        moveTo: Math.ceil(ITEM_WIDTH / 128),
                         scrollWidth: ELEMENT.scrollWidth || 0,
                         time: (this.configSlide.time * 1000) / 512,
                         item: ITEM,
