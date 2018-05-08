@@ -171,6 +171,7 @@ class OrcaSlide extends Utils {
      */
     static set isInfinite(index) {
         const {
+            contentItem,
             isInfinite,
             items,
             itemWidth,
@@ -179,10 +180,12 @@ class OrcaSlide extends Utils {
         if (isInfinite) {
             const INFINITE = (index < 0 || index > items);
             if (INFINITE) {
+                contentItem.style.scrollBehavior = "smooth";
                 const SCROLL = (RELOAD < 0) ? (items * itemWidth) : 0;
                 this.moveToScroll(SCROLL, false);
                 this.configSlide.position = (RELOAD < 0) ? items : 0;
                 this.configSlide.active = true;
+                contentItem.removeAttribute("style");
             }
         } else {
             this.displayArrow(index);
