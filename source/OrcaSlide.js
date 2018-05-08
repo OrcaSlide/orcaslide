@@ -28,23 +28,21 @@ class OrcaSlide extends Utils {
         if (active) {
             if (isInfinite && INFINITE) {
                 this.isInfinite = ACTUAL_POSITION;
-            } else {
-                if (!INFINITE) {
-                    this.configSlide.position += (isNext) ? 1 : -1;
-                    this.configSlide.active = false;
-                    this.isInfinite = ACTUAL_POSITION;
-                    let counter = 0;
-                    const TIMER = setInterval(() => {
-                        this.moveToScroll(MOVE_TO);
-                        counter += moveTo;
-                        if (counter >= itemWidth) {
-                            clearInterval(TIMER);
-                            const FULL_MOVE_TO = itemWidth * this.configSlide.position;
-                            this.moveToScroll(FULL_MOVE_TO, false);
-                            this.configSlide.active = true;
-                        }
-                    }, time);                    
-                }
+            } else if (!INFINITE) {
+                this.configSlide.position += (isNext) ? 1 : -1;
+                this.configSlide.active = false;
+                this.isInfinite = ACTUAL_POSITION;
+                let counter = 0;
+                const TIMER = setInterval(() => {
+                    this.moveToScroll(MOVE_TO);
+                    counter += moveTo;
+                    if (counter >= itemWidth) {
+                        clearInterval(TIMER);
+                        const FULL_MOVE_TO = itemWidth * this.configSlide.position;
+                        this.moveToScroll(FULL_MOVE_TO, false);
+                        this.configSlide.active = true;
+                    }
+                }, time);
             }
         }
     }
@@ -173,6 +171,7 @@ class OrcaSlide extends Utils {
      */
     static set isInfinite(index) {
         const {
+            contentItem,
             isInfinite,
             items,
             itemWidth,
@@ -181,10 +180,12 @@ class OrcaSlide extends Utils {
         if (isInfinite) {
             const INFINITE = (index < 0 || index > items);
             if (INFINITE) {
+                contentItem.style.scrollBehavior = "smooth";
                 const SCROLL = (RELOAD < 0) ? (items * itemWidth) : 0;
                 this.moveToScroll(SCROLL, false);
                 this.configSlide.position = (RELOAD < 0) ? items : 0;
                 this.configSlide.active = true;
+                contentItem.removeAttribute("style");
             }
         } else {
             this.displayArrow(index);
