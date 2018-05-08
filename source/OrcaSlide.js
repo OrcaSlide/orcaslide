@@ -25,11 +25,10 @@ class OrcaSlide extends Utils {
         const MOVE_TO = (isNext) ? moveTo : -moveTo;
         const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
         const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
-
         if (active) {
             if (isInfinite && INFINITE) {
                 this.isInfinite = ACTUAL_POSITION;
-            } else {
+            } else if (!INFINITE) {
                 this.configSlide.position += (isNext) ? 1 : -1;
                 this.configSlide.active = false;
                 this.isInfinite = ACTUAL_POSITION;
@@ -172,6 +171,7 @@ class OrcaSlide extends Utils {
      */
     static set isInfinite(index) {
         const {
+            contentItem,
             isInfinite,
             items,
             itemWidth,
@@ -180,10 +180,12 @@ class OrcaSlide extends Utils {
         if (isInfinite) {
             const INFINITE = (index < 0 || index > items);
             if (INFINITE) {
+                contentItem.style.scrollBehavior = "smooth";
                 const SCROLL = (RELOAD < 0) ? (items * itemWidth) : 0;
                 this.moveToScroll(SCROLL, false);
                 this.configSlide.position = (RELOAD < 0) ? items : 0;
                 this.configSlide.active = true;
+                contentItem.removeAttribute("style");
             }
         } else {
             this.displayArrow(index);
