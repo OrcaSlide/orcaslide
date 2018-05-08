@@ -25,11 +25,10 @@ class OrcaSlide extends Utils {
         const MOVE_TO = (isNext) ? moveTo : -moveTo;
         const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
         const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
-
         if (active) {
             if (isInfinite && INFINITE) {
                 this.isInfinite = ACTUAL_POSITION;
-            } else {
+            } else if (!INFINITE) {
                 this.configSlide.position += (isNext) ? 1 : -1;
                 this.configSlide.active = false;
                 this.isInfinite = ACTUAL_POSITION;
