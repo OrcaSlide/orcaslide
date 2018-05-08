@@ -25,25 +25,26 @@ class OrcaSlide extends Utils {
         const MOVE_TO = (isNext) ? moveTo : -moveTo;
         const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
         const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
-
         if (active) {
             if (isInfinite && INFINITE) {
                 this.isInfinite = ACTUAL_POSITION;
             } else {
-                this.configSlide.position += (isNext) ? 1 : -1;
-                this.configSlide.active = false;
-                this.isInfinite = ACTUAL_POSITION;
-                let counter = 0;
-                const TIMER = setInterval(() => {
-                    this.moveToScroll(MOVE_TO);
-                    counter += moveTo;
-                    if (counter >= itemWidth) {
-                        clearInterval(TIMER);
-                        const FULL_MOVE_TO = itemWidth * this.configSlide.position;
-                        this.moveToScroll(FULL_MOVE_TO, false);
-                        this.configSlide.active = true;
-                    }
-                }, time);
+                if (!INFINITE) {
+                    this.configSlide.position += (isNext) ? 1 : -1;
+                    this.configSlide.active = false;
+                    this.isInfinite = ACTUAL_POSITION;
+                    let counter = 0;
+                    const TIMER = setInterval(() => {
+                        this.moveToScroll(MOVE_TO);
+                        counter += moveTo;
+                        if (counter >= itemWidth) {
+                            clearInterval(TIMER);
+                            const FULL_MOVE_TO = itemWidth * this.configSlide.position;
+                            this.moveToScroll(FULL_MOVE_TO, false);
+                            this.configSlide.active = true;
+                        }
+                    }, time);                    
+                }
             }
         }
     }
