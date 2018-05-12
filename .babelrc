@@ -4,5 +4,8 @@
             "env",
             "minify"
         ]
+    ],
+    "plugins" : [
+         ["inline-json-import", {}]
     ]
 }

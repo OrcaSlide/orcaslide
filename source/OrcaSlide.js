@@ -9,21 +9,8 @@ class OrcaSlide {
      * @return {void}
      */
     constructor(config) {
-        this.configSlide = {
-            arrowNext: "",
-            arrowPrevious: "",
-            autoPlay: false,
-            contentItem: "",
-            ctrlStop: "",
-            ctrlPlay: "",
-            time: 1,
-            timeAutoPlay: 2,
-            isInfinite: false,
-            position: 0,
-            active: false,
-        };
+        this.configSlide = config;
         this.autoPlayTimer = null;
-        Object.assign(this.configSlide, config);
         this.initSlider();
     }
 
@@ -50,6 +37,7 @@ class OrcaSlide {
         const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
         const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
         if (active) {
+            this.callbacks(isNext, ACTUAL_POSITION);
             if (isInfinite && INFINITE) {
                 this.isInfinite = ACTUAL_POSITION;
             } else if (!INFINITE) {
@@ -86,6 +74,22 @@ class OrcaSlide {
             this.autoPlayTimer = setInterval(() => {
                 this.animateSlide();
             }, timeAutoPlay);
+        }
+    }
+
+    callbacks(isNext, position) {
+        const { callbacks } = this.configSlide;
+        const INDEX = (isNext) ? (position - 1) : (position + 1);
+        const ACTION = callbacks[`Slide${INDEX}`] || null;
+        if (ACTION) {
+            const LAUNCH = ((ACTION.next === isNext) || (ACTION.previus && !isNext));
+            try {
+                if (LAUNCH) ACTION.callback();
+            } catch (error) {
+                console.groupCollapsed("%c 🚫 [OrcaSlide => Error]", "color:#FFF;");
+                console.error(error);
+                console.groupEnd("[OrcaSlide => Error]");
+            }
         }
     }
 
@@ -268,6 +272,7 @@ class OrcaSlide {
             "arrowPrevious",
             "contentItem",
         ];
+        const { callbacks } = this.configSlide;
         KEYS.forEach((item) => {
             const SELECTOR = this.configSlide[item];
             const ELEMENT = Utils.getElementDom(SELECTOR);
@@ -294,6 +299,7 @@ class OrcaSlide {
                 }
             }
         });
+        this.configSlide.callbacks = Utils.getCallbacksConfig(callbacks);
         return this.validateConfigAutoPlay;
     }
 

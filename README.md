@@ -4,7 +4,6 @@
 
 [![GitHub version](https://badge.fury.io/gh/konami12%2Forcaslide.svg)](https://badge.fury.io/gh/konami12%2Forcaslide)
 
-
 *OrcaSlide* Un Slider básico creado con JS nativo. El propósito de este desarrollo es evitar el uso de
 librerías qua a futuro causan problemas de compatibilidad al tener que convivir con otros paquetes o funcionalidades y evitar la imposición de una estrucura HTML que difiera de tu proyecto.
 
@@ -36,6 +35,7 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
 | **arrowPrevious** | *String*     | `N/A`             | Selector referente al botón para la acción **Previus**.|
 | **arrowNext**     | *String*     | `N/A`             | Selector referente al botón para la acción **Next**.|
 | **autoPlay**      | *Boolean*    | `false`           | Permite indicar si el slider cuenta con **autoplay**|
+|**callbacks**      | *Array*      | `[]`              | Permite realizar carga de eventos cada vez que se pase un **slide**, para visualisar el uso de esta funcionalidad podemos ver lo en el apartado [💡 Ejemplo](#-ejemplo).
 | **contentItem**   | *String*     | `N/A`             | Selector referente al **Contenedor** de los items del Slide.|
 | **ctrlStop**      | *String*     | `N/A`             | Selector referente al botón para la acción detener el **autoPlay**|
 | **ctrlPlay**      | *String*     | `N/A`             | Selector referente al botón para la acción reiniciar el **autPlay**|
@@ -51,10 +51,41 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
     // Carga del paquete
     import OrcaSlide from "orcaslide";
 
+    // configuración de ejemplo para el uso de los callbacks.
+    const CONFIG_CALLBACKS = [
+        {
+            /**
+             * Se indica la función que se desea ejecutar.
+             */
+            callback: () => { console.log("PASE o REGRESE => Slide 2"); },
+            /**
+             * Indica en que posición del slide se ejecuta el callback
+             */
+            slide: 2,
+            /*
+             * esto indica si el evento se realiza al pasar el slider.
+             * por defecto el valor es false,
+            **/ 
+            next: true,
+            /*
+             * esto indica si el evento se realiza al retroceder un slider.
+             * por defecto el valor es false,
+            **/ 
+            previus: true,
+        },
+        {
+            callback: () => { console.log("PASE o REGRESE => Slide 3"); },
+            slide: 3,
+            next: true,
+
+        },
+    ];
+
     // Seteo de la configuración e inicialización
     OrcaSlide.config = {
         arrowPrevious: "#arrow_previus",
         arrowNext: "#arrow_next",
+        callbacks: CONFIG_CALLBACKS,
         ctrlStop: "#stop",
         ctrlPlay: "#play",
         contentItem: "#swipe",
