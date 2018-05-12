@@ -7,8 +7,10 @@ import Config from "./orcaConfig.json";
  */
 class initOrcaSlide {
     static set config(config) {
-        Object.assign(Config, config);
-        return new OrcaSlide(Config);
+        const CONFIG = JSON.stringify(Config);
+        const NEW_CONFIG = JSON.parse(CONFIG);
+        Object.assign(NEW_CONFIG, config);
+        return new OrcaSlide(NEW_CONFIG);
     }
 }
 
