@@ -1,9 +1,19 @@
 import Utils from "./Utils";
-/**
- * [OrcaSlide description]
- * @extends Utils
- */
-class OrcaSlide extends Utils {
+
+class OrcaSlide {
+    /**
+     * Metodo inicial encargado de validar la configuracion.
+     *
+     * @param {object} configuracion inicial.
+     *
+     * @return {void}
+     */
+    constructor(config) {
+        this.configSlide = config;
+        this.autoPlayTimer = null;
+        this.initSlider();
+    }
+
     /**
      * Genera la transicion de los sliders.
      *
@@ -11,9 +21,10 @@ class OrcaSlide extends Utils {
      *
      * @return void.
      */
-    static animateSlide(isNext = true) {
+    animateSlide(isNext = true) {
         const {
             active,
+            contentItem,
             itemWidth,
             items,
             moveTo,
@@ -26,6 +37,7 @@ class OrcaSlide extends Utils {
         const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
         const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
         if (active) {
+            this.callbacks(isNext, ACTUAL_POSITION);
             if (isInfinite && INFINITE) {
                 this.isInfinite = ACTUAL_POSITION;
             } else if (!INFINITE) {
@@ -34,12 +46,12 @@ class OrcaSlide extends Utils {
                 this.isInfinite = ACTUAL_POSITION;
                 let counter = 0;
                 const TIMER = setInterval(() => {
-                    this.moveToScroll(MOVE_TO);
+                    Utils.moveToScroll(MOVE_TO, contentItem);
                     counter += moveTo;
                     if (counter >= itemWidth) {
                         clearInterval(TIMER);
                         const FULL_MOVE_TO = itemWidth * this.configSlide.position;
-                        this.moveToScroll(FULL_MOVE_TO, false);
+                        Utils.moveToScroll(FULL_MOVE_TO, contentItem, false);
                         this.configSlide.active = true;
                     }
                 }, time);
@@ -53,7 +65,7 @@ class OrcaSlide extends Utils {
      * @param  {Boolean} (Optional) Indica si el carousel esten autoPlay.
      * @return {void}.
      */
-    static autoPlay(play = true) {
+    autoPlay(play = true) {
         this.configSlide.autoPlay = play;
         const { autoPlay, timeAutoPlay } = this.configSlide;
         if (!play && !autoPlay) {
@@ -65,6 +77,22 @@ class OrcaSlide extends Utils {
         }
     }
 
+    callbacks(isNext, position) {
+        const { callbacks } = this.configSlide;
+        const INDEX = (isNext) ? (position - 1) : (position + 1);
+        const ACTION = callbacks[`Slide${INDEX}`] || null;
+        if (ACTION) {
+            const LAUNCH = ((ACTION.next === isNext) || (ACTION.previus && !isNext));
+            try {
+                if (LAUNCH) ACTION.callback();
+            } catch (error) {
+                console.groupCollapsed("%c 🚫 [OrcaSlide => Error]", "color:#FFF;");
+                console.error(error);
+                console.groupEnd("[OrcaSlide => Error]");
+            }
+        }
+    }
+
     /**
      * Oculta las flechas.
      *
@@ -72,7 +100,7 @@ class OrcaSlide extends Utils {
      *
      * @return {void}
      */
-    static displayArrow(index) {
+    displayArrow(index) {
         const {
             autoPlay,
             arrowNext,
@@ -82,41 +110,19 @@ class OrcaSlide extends Utils {
         } = this.configSlide;
         const DISPLAY_PREVIUS = (index > 0) ? "" : "none";
         const DISPLAY_NEXT = (items === index) ? "none" : "";
-        this.displayToggle(arrowNext, DISPLAY_NEXT);
-        this.displayToggle(arrowPrevious, DISPLAY_PREVIUS);
+        Utils.displayToggle(arrowNext, DISPLAY_NEXT);
+        Utils.displayToggle(arrowPrevious, DISPLAY_PREVIUS);
         if (autoPlay && !isInfinite && DISPLAY_NEXT === "none") {
             this.autoPlay(false);
         }
     }
 
-    // ================================================================= //
-    //                         Setter and Getter                         //
-    // ================================================================= //
-
     /**
-     * Se carga la configuracion inicial.
-     *
-     * @param {Object} config  configuracion inicial.
+     * Se encarga de lanzar los eventos que dan vida al slider..
      *
      * @return void.
      */
-    static set config(config) {
-        this.configSlide = {
-            arrowNext: "",
-            arrowPrevious: "",
-            autoPlay: false,
-            contentItem: "",
-            ctrlStop: "",
-            ctrlPlay: "",
-            time: 1,
-            timeAutoPlay: 2,
-            isInfinite: false,
-            position: 0,
-            active: false,
-        };
-        this.autoPlayTimer = null;
-        Object.assign(this.configSlide, config);
-
+    initSlider() {
         this
             .validateConfig
             .setActionButton
@@ -124,15 +130,20 @@ class OrcaSlide extends Utils {
             .startTouch();
 
         if (this.configSlide.autoPlay) this.autoPlay();
+        return 0;
     }
+
+    // ================================================================= //
+    //                         Setter and Getter                         //
+    // ================================================================= //
 
     /**
      * Se innicializa el evento touch.
      *
      * @return {void} [description]
      */
-    static startTouch() {
-        const DEVICE = this.isMobile;
+    startTouch() {
+        const DEVICE = Utils.isMobile;
         const { contentItem, items } = this.configSlide;
         if (DEVICE !== "desktop") {
             let startX = 0;
@@ -169,7 +180,7 @@ class OrcaSlide extends Utils {
      *
      * @return {void}
      */
-    static set isInfinite(index) {
+    set isInfinite(index) {
         const {
             contentItem,
             isInfinite,
@@ -182,7 +193,7 @@ class OrcaSlide extends Utils {
             if (INFINITE) {
                 contentItem.style.scrollBehavior = "smooth";
                 const SCROLL = (RELOAD < 0) ? (items * itemWidth) : 0;
-                this.moveToScroll(SCROLL, false);
+                Utils.moveToScroll(SCROLL, contentItem, false);
                 this.configSlide.position = (RELOAD < 0) ? items : 0;
                 this.configSlide.active = true;
                 contentItem.removeAttribute("style");
@@ -197,10 +208,10 @@ class OrcaSlide extends Utils {
      *
      * @return self Fluent interface.
      */
-    static get resizeSlide() {
+    get resizeSlide() {
         const CONFIG = this.configSlide;
-        const ITEM = this.existFields(CONFIG, "item", null);
-        const ELEMENT = this.existFields(CONFIG, "content", null);
+        const ITEM = Utils.existFields(CONFIG, "item", null);
+        const ELEMENT = Utils.existFields(CONFIG, "content", null);
 
         if (ITEM !== null && ELEMENT !== null) {
             window.addEventListener("resize", () => {
@@ -208,7 +219,7 @@ class OrcaSlide extends Utils {
                 this.configSlide.moveTo = Math.ceil(ITEM.offsetWidth / 256);
                 this.configSlide.itemWidth = ITEM.offsetWidth;
                 const POST = ITEM.offsetWidth * this.configSlide.position;
-                this.moveToScroll(POST, false);
+                Utils.moveToScroll(POST, CONFIG.contentItem, false);
             });
         }
         return this;
@@ -219,7 +230,7 @@ class OrcaSlide extends Utils {
      *
      * @return void.
      */
-    static get setActionButton() {
+    get setActionButton() {
         const KEYS = [
             "arrowNext",
             "arrowPrevious",
@@ -236,13 +247,13 @@ class OrcaSlide extends Utils {
                 callbacks = () => {
                     this.autoPlay(IS_PLAY);
                 };
-                this.actionButton(BUTTON, callbacks);
+                Utils.actionButton(BUTTON, callbacks);
             } else {
                 callbacks = () => {
                     this.animateSlide(IS_NEXT);
                     this.autoPlay(false);
                 };
-                this.actionButton(BUTTON, callbacks);
+                Utils.actionButton(BUTTON, callbacks);
             }
         });
         return this;
@@ -255,15 +266,16 @@ class OrcaSlide extends Utils {
      *
      * @return self Fluent interface.
      */
-    static get validateConfig() {
+    get validateConfig() {
         const KEYS = [
             "arrowNext",
             "arrowPrevious",
             "contentItem",
         ];
+        const { callbacks } = this.configSlide;
         KEYS.forEach((item) => {
             const SELECTOR = this.configSlide[item];
-            const ELEMENT = this.getElementDom(SELECTOR);
+            const ELEMENT = Utils.getElementDom(SELECTOR);
 
             if (ELEMENT) {
                 this.configSlide[item] = ELEMENT;
@@ -282,15 +294,16 @@ class OrcaSlide extends Utils {
                     this.configSlide.active = (NEW_CONFIG.items > 0 && NEW_CONFIG.moveTo > 0);
                     Object.assign(this.configSlide, NEW_CONFIG);
                     if (!this.configSlide.isInfinite) {
-                        this.displayToggle(this.configSlide.arrowPrevious, "none");
+                        Utils.displayToggle(this.configSlide.arrowPrevious, "none");
                     }
                 }
             }
         });
+        this.configSlide.callbacks = Utils.getCallbacksConfig(callbacks);
         return this.validateConfigAutoPlay;
     }
 
-    static get validateConfigAutoPlay() {
+    get validateConfigAutoPlay() {
         const {
             active,
             ctrlPlay,
@@ -301,8 +314,8 @@ class OrcaSlide extends Utils {
         if (active) {
             const CONFIG = {
                 timeAutoPlay: (timeAutoPlay * 1000),
-                ctrlPlay: this.getElementDom(ctrlPlay),
-                ctrlStop: this.getElementDom(ctrlStop),
+                ctrlPlay: Utils.getElementDom(ctrlPlay),
+                ctrlStop: Utils.getElementDom(ctrlStop),
             };
             Object.assign(this.configSlide, CONFIG);
         }
