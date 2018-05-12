@@ -106,12 +106,12 @@ class Utils {
      *
      * @return void.
      */
-    static moveToScroll(pixels, isAdd = true) {
-        const { contentItem } = this.configSlide;
+    static moveToScroll(pixels, contentItem, isAdd = true) {
+        const CONTENT = contentItem;
         if (isAdd) {
-            contentItem.scrollLeft += pixels;
+            CONTENT.scrollLeft += pixels;
         } else {
-            contentItem.scrollLeft = pixels;
+            CONTENT.scrollLeft = pixels;
         }
     }
 }
