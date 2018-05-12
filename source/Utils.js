@@ -114,6 +114,32 @@ class Utils {
             CONTENT.scrollLeft = pixels;
         }
     }
+
+    /**
+     * Crea la configuracion base para el llamado de callbacks.
+     *
+     * @param  {array} config Listado de funciones.
+     *
+     * @return {object}
+     */
+    static getCallbacksConfig(config) {
+        const CONFIG = {
+            callback: () => {},
+            next: false,
+            previus: false,
+        };
+
+        const CALLBACKS = config.reduce((action, item) => {
+            const KEY = `Slide${item.slide - 1}`;
+            const DATA = {};
+            const DEFAULT = Object.assign({}, CONFIG);
+            Object.assign(DEFAULT, item);
+            DATA[KEY] = DEFAULT;
+            return Object.assign(action, DATA);
+        }, {});
+
+        return CALLBACKS;
+    }
 }
 
 export default Utils;
