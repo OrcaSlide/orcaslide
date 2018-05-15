@@ -272,11 +272,11 @@ class OrcaSlide {
             "arrowPrevious",
             "contentItem",
         ];
-        const { callbacks } = this.configSlide;
+        const { callbacks, jump } = this.configSlide;
         KEYS.forEach((item) => {
             const SELECTOR = this.configSlide[item];
             const ELEMENT = Utils.getElementDom(SELECTOR);
-
+            const JUMP = (Utils.isMobile === "desktop") ? 128 : jump;
             if (ELEMENT) {
                 this.configSlide[item] = ELEMENT;
                 if (item === "contentItem") {
@@ -285,7 +285,7 @@ class OrcaSlide {
                     const NEW_CONFIG = {
                         items: ELEMENT.children.length - 1,
                         itemWidth: ITEM_WIDTH,
-                        moveTo: Math.ceil(ITEM_WIDTH / 128),
+                        moveTo: Math.ceil(ITEM_WIDTH / JUMP),
                         scrollWidth: ELEMENT.scrollWidth || 0,
                         time: (this.configSlide.time * 1000) / 512,
                         item: ITEM,

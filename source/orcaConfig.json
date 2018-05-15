@@ -6,6 +6,7 @@
     "contentItem": "",
     "ctrlStop": "",
     "ctrlPlay": "",
+    "jump": 16,
     "time": 1,
     "timeAutoPlay": 2,
     "isInfinite": false,
