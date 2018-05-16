@@ -1,1 +1,389 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _createClass=function(){function a(a,b){for(var c,d=0;d<b.length;d++)c=b[d],c.enumerable=c.enumerable||!1,c.configurable=!0,"value"in c&&(c.writable=!0),Object.defineProperty(a,c.key,c)}return function(b,c,d){return c&&a(b.prototype,c),d&&a(b,d),b}}(),_Utils=require("./Utils"),_Utils2=_interopRequireDefault(_Utils);function _interopRequireDefault(a){return a&&a.__esModule?a:{default:a}}function _classCallCheck(a,b){if(!(a instanceof b))throw new TypeError("Cannot call a class as a function")}var OrcaSlide=function(){function a(b){_classCallCheck(this,a),this.configSlide=b,this.autoPlayTimer=null,this.initSlider()}var b=Math.ceil;return _createClass(a,[{key:"animateSlide",value:function(){var a=this,b=!(0<arguments.length&&void 0!==arguments[0])||arguments[0],c=this.configSlide,d=c.active,e=c.contentItem,f=c.itemWidth,g=c.items,h=c.moveTo,i=c.time,j=c.position,k=c.isInfinite,l=b?h:-h,m=b?j+1:j-1,n=g<m||0>m;if(d)if(this.callbacks(b,m),k&&n)this.isInfinite=m;else if(!n){this.configSlide.position+=b?1:-1,this.configSlide.active=!1,this.isInfinite=m;var o=0,p=setInterval(function(){if(_Utils2.default.moveToScroll(l,e),o+=h,o>=f){clearInterval(p);var b=f*a.configSlide.position;_Utils2.default.moveToScroll(b,e,!1),a.configSlide.active=!0}},i)}}},{key:"autoPlay",value:function a(){var b=this,c=!(0<arguments.length&&void 0!==arguments[0])||arguments[0];this.configSlide.autoPlay=c;var d=this.configSlide,a=d.autoPlay,e=d.timeAutoPlay;c||a?c&&a&&(this.autoPlayTimer=setInterval(function(){b.animateSlide()},e)):clearInterval(this.autoPlayTimer)}},{key:"callbacks",value:function a(b,c){var a=this.configSlide.callbacks,d=b?c-1:c+1,e=a["Slide"+d]||null;if(e){var f=e.next===b||e.previus&&!b;try{f&&e.callback()}catch(a){console.groupCollapsed("%c \uD83D\uDEAB [OrcaSlide => Error]","color:#FFF;"),console.error(a),console.groupEnd("[OrcaSlide => Error]")}}}},{key:"displayArrow",value:function(a){var b=this.configSlide,c=b.autoPlay,d=b.arrowNext,e=b.arrowPrevious,f=b.items,g=b.isInfinite,h=0<a?"":"none",i=f===a?"none":"";_Utils2.default.displayToggle(d,i),_Utils2.default.displayToggle(e,h),c&&!g&&"none"===i&&this.autoPlay(!1)}},{key:"initSlider",value:function(){return this.validateConfig.setActionButton.resizeSlide.startTouch(),this.configSlide.autoPlay&&this.autoPlay(),0}},{key:"startTouch",value:function(){var a=this,b=_Utils2.default.isMobile,c=this.configSlide,d=c.contentItem,e=c.items;if("desktop"!==b){var f=0;d.addEventListener("touchstart",function(a){var b=a.changedTouches[0];f=parseInt(b.clientX,10)}),d.addEventListener("touchmove",function(b){var c=b.changedTouches[0],d="",g=parseInt(c.clientX,10);d=0<g-f?"right":"left","left"===d&&a.configSlide.position<e?(a.autoPlay(!1),a.animateSlide(!0)):"right"===d&&0<a.configSlide.position&&(a.autoPlay(!1),a.animateSlide(!1))})}}},{key:"isInfinite",set:function(a){var b=this.configSlide,c=b.contentItem,d=b.isInfinite,e=b.items,f=b.itemWidth,g=(0>a||a>e)&&a;if(d){if(0>a||a>e){c.style.scrollBehavior="smooth";var h=0>g?e*f:0;_Utils2.default.moveToScroll(h,c,!1),this.configSlide.position=0>g?e:0,this.configSlide.active=!0,c.removeAttribute("style")}}else this.displayArrow(a)}},{key:"resizeSlide",get:function(){var a=this,c=this.configSlide,d=_Utils2.default.existFields(c,"item",null),e=_Utils2.default.existFields(c,"content",null);return null!==d&&null!==e&&window.addEventListener("resize",function(){a.configSlide.scrollWidth=e.scrollWidth,a.configSlide.moveTo=b(d.offsetWidth/256),a.configSlide.itemWidth=d.offsetWidth;var f=d.offsetWidth*a.configSlide.position;_Utils2.default.moveToScroll(f,c.contentItem,!1)}),this}},{key:"setActionButton",get:function(){var a=this;return["arrowNext","arrowPrevious","ctrlStop","ctrlPlay"].forEach(function(b){var c=a.configSlide[b],d=function(){};b.includes("ctrl")?(d=function(){a.autoPlay("ctrlPlay"===b)},_Utils2.default.actionButton(c,d)):(d=function(){a.animateSlide("arrowNext"===b),a.autoPlay(!1)},_Utils2.default.actionButton(c,d))}),this}},{key:"validateConfig",get:function(){var a=this,c=this.configSlide,d=c.callbacks,e=c.jump;return["arrowNext","arrowPrevious","contentItem"].forEach(function(c){var d=a.configSlide[c],f=_Utils2.default.getElementDom(d),g="desktop"===_Utils2.default.isMobile?128:e;if(f&&(a.configSlide[c]=f,"contentItem"===c)){var h=f.children[0]||{},i=h.offsetWidth||0,j={items:f.children.length-1,itemWidth:i,moveTo:b(i/g),scrollWidth:f.scrollWidth||0,time:1e3*a.configSlide.time/512,item:h,content:f};a.configSlide.active=0<j.items&&0<j.moveTo,Object.assign(a.configSlide,j),a.configSlide.isInfinite||_Utils2.default.displayToggle(a.configSlide.arrowPrevious,"none")}}),this.configSlide.callbacks=_Utils2.default.getCallbacksConfig(d),this.validateConfigAutoPlay}},{key:"validateConfigAutoPlay",get:function(){var a=this.configSlide,b=a.active,c=a.ctrlPlay,d=a.ctrlStop,e=a.timeAutoPlay;if(b){var f={timeAutoPlay:1e3*e,ctrlPlay:_Utils2.default.getElementDom(c),ctrlStop:_Utils2.default.getElementDom(d)};Object.assign(this.configSlide,f)}return this}}]),a}();exports.default=OrcaSlide;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Utils = require("./Utils");
+
+var _Utils2 = _interopRequireDefault(_Utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var OrcaSlide = function () {
+    /**
+     * Metodo inicial encargado de validar la configuracion.
+     *
+     * @param {object} configuracion inicial.
+     *
+     * @return {void}
+     */
+    function OrcaSlide(config) {
+        _classCallCheck(this, OrcaSlide);
+
+        this.configSlide = config;
+        this.autoPlayTimer = null;
+        this.initSlider();
+    }
+
+    /**
+     * Genera la transicion de los sliders.
+     *
+     * @param  {Boolean} isNext (Optional) indica el tipo de accion.
+     *
+     * @return void.
+     */
+
+
+    _createClass(OrcaSlide, [{
+        key: "animateSlide",
+        value: function animateSlide() {
+            var _this = this;
+
+            var isNext = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+            var _configSlide = this.configSlide,
+                active = _configSlide.active,
+                contentItem = _configSlide.contentItem,
+                itemWidth = _configSlide.itemWidth,
+                items = _configSlide.items,
+                moveTo = _configSlide.moveTo,
+                time = _configSlide.time,
+                position = _configSlide.position,
+                isInfinite = _configSlide.isInfinite;
+
+
+            var MOVE_TO = isNext ? moveTo : -moveTo;
+            var ACTUAL_POSITION = isNext ? position + 1 : position - 1;
+            var INFINITE = items < ACTUAL_POSITION || ACTUAL_POSITION < 0;
+            if (active) {
+                this.callbacks(isNext, ACTUAL_POSITION);
+                if (isInfinite && INFINITE) {
+                    this.isInfinite = ACTUAL_POSITION;
+                } else if (!INFINITE) {
+                    this.configSlide.position += isNext ? 1 : -1;
+                    this.configSlide.active = false;
+                    this.isInfinite = ACTUAL_POSITION;
+                    var counter = 0;
+                    var TIMER = setInterval(function () {
+                        _Utils2.default.moveToScroll(MOVE_TO, contentItem);
+                        counter += moveTo;
+                        if (counter >= itemWidth) {
+                            clearInterval(TIMER);
+                            var FULL_MOVE_TO = itemWidth * _this.configSlide.position;
+                            _Utils2.default.moveToScroll(FULL_MOVE_TO, contentItem, false);
+                            _this.configSlide.active = true;
+                        }
+                    }, time);
+                }
+            }
+        }
+
+        /**
+         * Permite el manejo de la accion autoPlay.
+         *
+         * @param  {Boolean} (Optional) Indica si el carousel esten autoPlay.
+         * @return {void}.
+         */
+
+    }, {
+        key: "autoPlay",
+        value: function autoPlay() {
+            var _this2 = this;
+
+            var play = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            this.configSlide.autoPlay = play;
+            var _configSlide2 = this.configSlide,
+                autoPlay = _configSlide2.autoPlay,
+                timeAutoPlay = _configSlide2.timeAutoPlay;
+
+            if (!play && !autoPlay) {
+                clearInterval(this.autoPlayTimer);
+            } else if (play && autoPlay) {
+                this.autoPlayTimer = setInterval(function () {
+                    _this2.animateSlide();
+                }, timeAutoPlay);
+            }
+        }
+    }, {
+        key: "callbacks",
+        value: function callbacks(isNext, position) {
+            var callbacks = this.configSlide.callbacks;
+
+            var INDEX = isNext ? position - 1 : position + 1;
+            var ACTION = callbacks["Slide" + INDEX] || null;
+            if (ACTION) {
+                var LAUNCH = ACTION.next === isNext || ACTION.previus && !isNext;
+                try {
+                    if (LAUNCH) ACTION.callback();
+                } catch (error) {
+                    console.groupCollapsed("%c 🚫 [OrcaSlide => Error]", "color:#FFF;");
+                    console.error(error);
+                    console.groupEnd("[OrcaSlide => Error]");
+                }
+            }
+        }
+
+        /**
+         * Oculta las flechas.
+         *
+         * @param {number} element posicion del elemento.
+         *
+         * @return {void}
+         */
+
+    }, {
+        key: "displayArrow",
+        value: function displayArrow(index) {
+            var _configSlide3 = this.configSlide,
+                autoPlay = _configSlide3.autoPlay,
+                arrowNext = _configSlide3.arrowNext,
+                arrowPrevious = _configSlide3.arrowPrevious,
+                items = _configSlide3.items,
+                isInfinite = _configSlide3.isInfinite;
+
+            var DISPLAY_PREVIUS = index > 0 ? "" : "none";
+            var DISPLAY_NEXT = items === index ? "none" : "";
+            _Utils2.default.displayToggle(arrowNext, DISPLAY_NEXT);
+            _Utils2.default.displayToggle(arrowPrevious, DISPLAY_PREVIUS);
+            if (autoPlay && !isInfinite && DISPLAY_NEXT === "none") {
+                this.autoPlay(false);
+            }
+        }
+
+        /**
+         * Se encarga de lanzar los eventos que dan vida al slider..
+         *
+         * @return void.
+         */
+
+    }, {
+        key: "initSlider",
+        value: function initSlider() {
+            this.validateConfig.setActionButton.resizeSlide.startTouch();
+
+            if (this.configSlide.autoPlay) this.autoPlay();
+            return 0;
+        }
+
+        // ================================================================= //
+        //                         Setter and Getter                         //
+        // ================================================================= //
+
+        /**
+         * Se innicializa el evento touch.
+         *
+         * @return {void} [description]
+         */
+
+    }, {
+        key: "startTouch",
+        value: function startTouch() {
+            var _this3 = this;
+
+            var DEVICE = _Utils2.default.isMobile;
+            var _configSlide4 = this.configSlide,
+                contentItem = _configSlide4.contentItem,
+                items = _configSlide4.items;
+
+            if (DEVICE !== "desktop") {
+                var startX = 0;
+                contentItem.addEventListener("touchstart", function (action) {
+                    var SWIPE = action.changedTouches[0];
+                    startX = parseInt(SWIPE.clientX, 10);
+                    action.preventDefault();
+                }, false);
+                contentItem.addEventListener("touchmove", function (action) {
+                    var SWIPE = action.changedTouches[0];
+                    var direction = "";
+                    var swipeX = parseInt(SWIPE.clientX, 10);
+
+                    if (swipeX - startX > 0) {
+                        direction = "right";
+                    } else {
+                        direction = "left";
+                    }
+
+                    if (direction === "left" && _this3.configSlide.position < items) {
+                        _this3.autoPlay(false);
+                        _this3.animateSlide(true);
+                    } else if (direction === "right" && _this3.configSlide.position > 0) {
+                        _this3.autoPlay(false);
+                        _this3.animateSlide(false);
+                    }
+                    action.preventDefault();
+                }, false);
+            }
+        }
+
+        /**
+         * Permite manejar la logica de cuando el carousel es infinito.
+         *
+         * @param {number} index  Posicion actual del slider.
+         *
+         * @return {void}
+         */
+
+    }, {
+        key: "isInfinite",
+        set: function set(index) {
+            var _configSlide5 = this.configSlide,
+                contentItem = _configSlide5.contentItem,
+                isInfinite = _configSlide5.isInfinite,
+                items = _configSlide5.items,
+                itemWidth = _configSlide5.itemWidth;
+
+            var RELOAD = (index < 0 || index > items) && index;
+            if (isInfinite) {
+                var INFINITE = index < 0 || index > items;
+                if (INFINITE) {
+                    contentItem.style.scrollBehavior = "smooth";
+                    var SCROLL = RELOAD < 0 ? items * itemWidth : 0;
+                    _Utils2.default.moveToScroll(SCROLL, contentItem, false);
+                    this.configSlide.position = RELOAD < 0 ? items : 0;
+                    this.configSlide.active = true;
+                    contentItem.removeAttribute("style");
+                }
+            } else {
+                this.displayArrow(index);
+            }
+        }
+
+        /**
+         * Evita que al redimensionar el navegador se tengan problemas con los slides.
+         *
+         * @return self Fluent interface.
+         */
+
+    }, {
+        key: "resizeSlide",
+        get: function get() {
+            var _this4 = this;
+
+            var CONFIG = this.configSlide;
+            var ITEM = _Utils2.default.existFields(CONFIG, "item", null);
+            var ELEMENT = _Utils2.default.existFields(CONFIG, "content", null);
+
+            if (ITEM !== null && ELEMENT !== null) {
+                window.addEventListener("resize", function () {
+                    _this4.configSlide.scrollWidth = ELEMENT.scrollWidth;
+                    _this4.configSlide.moveTo = Math.ceil(ITEM.offsetWidth / 256);
+                    _this4.configSlide.itemWidth = ITEM.offsetWidth;
+                    var POST = ITEM.offsetWidth * _this4.configSlide.position;
+                    _Utils2.default.moveToScroll(POST, CONFIG.contentItem, false);
+                });
+            }
+            return this;
+        }
+
+        /**
+         * Asigna los eventos a las flechas.
+         *
+         * @return void.
+         */
+
+    }, {
+        key: "setActionButton",
+        get: function get() {
+            var _this5 = this;
+
+            var KEYS = ["arrowNext", "arrowPrevious", "ctrlStop", "ctrlPlay"];
+            KEYS.forEach(function (button) {
+                var BUTTON = _this5.configSlide[button];
+                var IS_PLAY = button === "ctrlPlay";
+                var IS_NEXT = button === "arrowNext";
+                var callbacks = function callbacks() {};
+
+                if (button.includes("ctrl")) {
+                    callbacks = function callbacks() {
+                        _this5.autoPlay(IS_PLAY);
+                    };
+                    _Utils2.default.actionButton(BUTTON, callbacks);
+                } else {
+                    callbacks = function callbacks() {
+                        _this5.animateSlide(IS_NEXT);
+                        _this5.autoPlay(false);
+                    };
+                    _Utils2.default.actionButton(BUTTON, callbacks);
+                }
+            });
+            return this;
+        }
+
+        /**
+         * Validacion de la configuracion base.
+         *
+         * @type {Object} Resive la configuracion base.
+         *
+         * @return self Fluent interface.
+         */
+
+    }, {
+        key: "validateConfig",
+        get: function get() {
+            var _this6 = this;
+
+            var KEYS = ["arrowNext", "arrowPrevious", "contentItem"];
+            var _configSlide6 = this.configSlide,
+                callbacks = _configSlide6.callbacks,
+                jump = _configSlide6.jump;
+
+            KEYS.forEach(function (item) {
+                var SELECTOR = _this6.configSlide[item];
+                var ELEMENT = _Utils2.default.getElementDom(SELECTOR);
+                var JUMP = _Utils2.default.isMobile === "desktop" ? 128 : jump;
+                if (ELEMENT) {
+                    _this6.configSlide[item] = ELEMENT;
+                    if (item === "contentItem") {
+                        var ITEM = ELEMENT.children[0] || {};
+                        var ITEM_WIDTH = ITEM.offsetWidth || 0;
+                        var NEW_CONFIG = {
+                            items: ELEMENT.children.length - 1,
+                            itemWidth: ITEM_WIDTH,
+                            moveTo: Math.ceil(ITEM_WIDTH / JUMP),
+                            scrollWidth: ELEMENT.scrollWidth || 0,
+                            time: _this6.configSlide.time * 1000 / 512,
+                            item: ITEM,
+                            content: ELEMENT
+                        };
+                        _this6.configSlide.active = NEW_CONFIG.items > 0 && NEW_CONFIG.moveTo > 0;
+                        Object.assign(_this6.configSlide, NEW_CONFIG);
+                        if (!_this6.configSlide.isInfinite) {
+                            _Utils2.default.displayToggle(_this6.configSlide.arrowPrevious, "none");
+                        }
+                    }
+                }
+            });
+            this.configSlide.callbacks = _Utils2.default.getCallbacksConfig(callbacks);
+            return this.validateConfigAutoPlay;
+        }
+    }, {
+        key: "validateConfigAutoPlay",
+        get: function get() {
+            var _configSlide7 = this.configSlide,
+                active = _configSlide7.active,
+                ctrlPlay = _configSlide7.ctrlPlay,
+                ctrlStop = _configSlide7.ctrlStop,
+                timeAutoPlay = _configSlide7.timeAutoPlay;
+
+
+            if (active) {
+                var CONFIG = {
+                    timeAutoPlay: timeAutoPlay * 1000,
+                    ctrlPlay: _Utils2.default.getElementDom(ctrlPlay),
+                    ctrlStop: _Utils2.default.getElementDom(ctrlStop)
+                };
+                Object.assign(this.configSlide, CONFIG);
+            }
+            return this;
+        }
+    }]);
+
+    return OrcaSlide;
+}();
+
+exports.default = OrcaSlide;

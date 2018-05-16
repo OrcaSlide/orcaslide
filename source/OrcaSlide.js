@@ -150,7 +150,8 @@ class OrcaSlide {
             contentItem.addEventListener("touchstart", (action) => {
                 const SWIPE = action.changedTouches[0];
                 startX = parseInt(SWIPE.clientX, 10);
-            });
+                action.preventDefault();
+            }, false);
             contentItem.addEventListener("touchmove", (action) => {
                 const SWIPE = action.changedTouches[0];
                 let direction = "";
@@ -169,7 +170,8 @@ class OrcaSlide {
                     this.autoPlay(false);
                     this.animateSlide(false);
                 }
-            });
+                action.preventDefault();
+            }, false);
         }
     }
 
