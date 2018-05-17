@@ -144,22 +144,43 @@ class OrcaSlide {
      */
     startTouch() {
         const DEVICE = Utils.isMobile;
-        const { contentItem, items } = this.configSlide;
+        const { contentItem, items, swipeConfig } = this.configSlide;
         if (DEVICE !== "desktop") {
-            let startX = 0;
+            const SWIPE = swipeConfig;
             contentItem.addEventListener("touchstart", (action) => {
-                const SWIPE = action.changedTouches[0];
-                startX = parseInt(SWIPE.clientX, 10);
-            });
-            contentItem.addEventListener("touchmove", (action) => {
-                const SWIPE = action.changedTouches[0];
-                let direction = "";
-                const swipeX = parseInt(SWIPE.clientX, 10);
+                action.preventDefault();
+                const TOUCH = Utils.existFields(action, "touches.0", null);
+                if (TOUCH) {
+                    SWIPE.startX = TOUCH.screenX;
+                    SWIPE.startY = TOUCH.screenY;
+                }
+            }, false);
 
-                if ((swipeX - startX) > 0) {
-                    direction = "right";
-                } else {
-                    direction = "left";
+            contentItem.addEventListener("touchmove", (action) => {
+                action.preventDefault();
+                const TOUCH = Utils.existFields(action, "touches.0", null);
+                if (TOUCH) {
+                    SWIPE.endX = TOUCH.screenX;
+                    SWIPE.endY = TOUCH.screenY;
+                }
+            }, false);
+
+            contentItem.addEventListener("touchend", () => {
+                let direction = "";
+                const HZR_X1 = ((SWIPE.endX - SWIPE.min_x) > SWIPE.startX);
+                const HZR_X2 = ((SWIPE.endX + SWIPE.min_x) < SWIPE.startX);
+                const HZR_Y1 = (SWIPE.endY < (SWIPE.startY + SWIPE.max_y));
+                const HZR_Y2 = (SWIPE.startY > (SWIPE.endY - SWIPE.max_y));
+
+                const VERT_Y1 = ((SWIPE.endY - SWIPE.min_y) > SWIPE.startY);
+                const VERT_Y2 = ((SWIPE.endY + SWIPE.min_y) < SWIPE.startY);
+                const VERT_X1 = (SWIPE.endX < (SWIPE.startX + SWIPE.max_x));
+                const VERT_X2 = (SWIPE.startX > (SWIPE.endX - SWIPE.max_x));
+
+                if ((HZR_X1 || HZR_X2) && (HZR_Y1 && HZR_Y2)) {
+                    direction = (SWIPE.endX > SWIPE.startX) ? "right" : "left";
+                } else if ((VERT_Y1 || VERT_Y2) && (VERT_X1 && VERT_X2)) {
+                    direction = (SWIPE.endY > SWIPE.startY) ? "bottom" : "top";
                 }
 
                 if (direction === "left" && this.configSlide.position < items) {
@@ -169,7 +190,7 @@ class OrcaSlide {
                     this.autoPlay(false);
                     this.animateSlide(false);
                 }
-            });
+            }, false);
         }
     }
 
@@ -272,11 +293,11 @@ class OrcaSlide {
             "arrowPrevious",
             "contentItem",
         ];
-        const { callbacks } = this.configSlide;
+        const { callbacks, jump } = this.configSlide;
         KEYS.forEach((item) => {
             const SELECTOR = this.configSlide[item];
             const ELEMENT = Utils.getElementDom(SELECTOR);
-
+            const JUMP = (Utils.isMobile === "desktop") ? 128 : jump;
             if (ELEMENT) {
                 this.configSlide[item] = ELEMENT;
                 if (item === "contentItem") {
@@ -285,7 +306,7 @@ class OrcaSlide {
                     const NEW_CONFIG = {
                         items: ELEMENT.children.length - 1,
                         itemWidth: ITEM_WIDTH,
-                        moveTo: Math.ceil(ITEM_WIDTH / 128),
+                        moveTo: Math.ceil(ITEM_WIDTH / JUMP),
                         scrollWidth: ELEMENT.scrollWidth || 0,
                         time: (this.configSlide.time * 1000) / 512,
                         item: ITEM,
