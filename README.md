@@ -4,7 +4,7 @@
 
 [![GitHub version](https://badge.fury.io/gh/konami12%2Forcaslide.svg)](https://badge.fury.io/gh/konami12%2Forcaslide)
 
-*OrcaSlide* Un Slider básico creado con JS nativo. El propósito de este desarrollo es evitar el uso de
+*OrcaSlide* Un Slider básico creado con **JS** nativo. El propósito de este desarrollo es evitar el uso de
 librerías qua a futuro causan problemas de compatibilidad al tener que convivir con otros paquetes o funcionalidades y evitar la imposición de una estrucura HTML que difiera de tu proyecto.
 
 ##  💾 Instalación
