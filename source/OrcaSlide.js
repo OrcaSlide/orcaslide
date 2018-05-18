@@ -32,7 +32,6 @@ class OrcaSlide {
             position,
             isInfinite,
         } = this.configSlide;
-
         const MOVE_TO = (isNext) ? moveTo : -moveTo;
         const ACTUAL_POSITION = (isNext) ? (position + 1) : (position - 1);
         const INFINITE = (items < ACTUAL_POSITION || ACTUAL_POSITION < 0);
@@ -128,7 +127,6 @@ class OrcaSlide {
             .setActionButton
             .resizeSlide
             .startTouch();
-
         if (this.configSlide.autoPlay) this.autoPlay();
         return 0;
     }
@@ -144,33 +142,49 @@ class OrcaSlide {
      */
     startTouch() {
         const DEVICE = Utils.isMobile;
-        const { contentItem, items } = this.configSlide;
+        const { contentItem, items, swipeConfig } = this.configSlide;
         if (DEVICE !== "desktop") {
-            let startX = 0;
+            const SWIPE = swipeConfig;
             contentItem.addEventListener("touchstart", (action) => {
-                const SWIPE = action.changedTouches[0];
-                startX = parseInt(SWIPE.clientX, 10);
-                action.preventDefault();
-            }, false);
-            contentItem.addEventListener("touchmove", (action) => {
-                const SWIPE = action.changedTouches[0];
-                let direction = "";
-                const swipeX = parseInt(SWIPE.clientX, 10);
-
-                if ((swipeX - startX) > 0) {
-                    direction = "right";
-                } else {
-                    direction = "left";
+                const TOUCH = Utils.existFields(action, "touches.0", null);
+                if (TOUCH) {
+                    SWIPE.startX = TOUCH.screenX;
+                    SWIPE.startY = TOUCH.screenY;
                 }
+            }, false);
 
-                if (direction === "left" && this.configSlide.position < items) {
+            contentItem.addEventListener("touchmove", (action) => {
+                const TOUCH = Utils.existFields(action, "touches.0", null);
+                if (TOUCH) {
+                    SWIPE.endX = TOUCH.screenX;
+                    SWIPE.endY = TOUCH.screenY;
+                    const HZR_X1 = ((SWIPE.endX - SWIPE.min_x) > SWIPE.startX);
+                    const HZR_X2 = ((SWIPE.endX + SWIPE.min_x) < SWIPE.startX);
+                    const HZR_Y1 = (SWIPE.endY < (SWIPE.startY + SWIPE.max_y));
+                    const HZR_Y2 = (SWIPE.startY > (SWIPE.endY - SWIPE.max_y));
+
+                    const VERT_Y1 = ((SWIPE.endY - SWIPE.min_y) > SWIPE.startY);
+                    const VERT_Y2 = ((SWIPE.endY + SWIPE.min_y) < SWIPE.startY);
+                    const VERT_X1 = (SWIPE.endX < (SWIPE.startX + SWIPE.max_x));
+                    const VERT_X2 = (SWIPE.startX > (SWIPE.endX - SWIPE.max_x));
+
+                    if ((HZR_X1 || HZR_X2) && (HZR_Y1 && HZR_Y2)) {
+                        SWIPE.direction = (SWIPE.endX > SWIPE.startX) ? "right" : "left";
+                    } else if ((VERT_Y1 || VERT_Y2) && (VERT_X1 && VERT_X2)) {
+                        SWIPE.direction = (SWIPE.endY > SWIPE.startY) ? "bottom" : "top";
+                    }
+                }
+            }, false);
+
+            contentItem.addEventListener("touchend", (action) => {
+                action.preventDefault();
+                if (SWIPE.direction === "left" && this.configSlide.position < items) {
                     this.autoPlay(false);
                     this.animateSlide(true);
-                } else if (direction === "right" && this.configSlide.position > 0) {
+                } else if (SWIPE.direction === "right" && this.configSlide.position > 0) {
                     this.autoPlay(false);
                     this.animateSlide(false);
                 }
-                action.preventDefault();
             }, false);
         }
     }

@@ -6,10 +6,21 @@
     "contentItem": "",
     "ctrlStop": "",
     "ctrlPlay": "",
-    "jump": 120,
+    "jump": 64,
     "time": 1,
     "timeAutoPlay": 2,
     "isInfinite": false,
     "position": 0,
-    "active": false
+    "active": false,
+    "swipeConfig": {
+        "direction": "",
+        "startX": 0,
+        "startY": 0,
+        "endX": 0,
+        "endY": 0,
+        "min_x": 20,
+        "max_x": 40,
+        "min_y": 40,
+        "max_y": 50
+    }
 }
