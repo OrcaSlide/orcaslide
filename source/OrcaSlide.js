@@ -176,8 +176,7 @@ class OrcaSlide {
                 }
             }, false);
 
-            contentItem.addEventListener("touchend", (action) => {
-                action.preventDefault();
+            contentItem.addEventListener("touchend", () => {
                 if (SWIPE.direction === "left" && this.configSlide.position < items) {
                     this.autoPlay(false);
                     this.animateSlide(true);
