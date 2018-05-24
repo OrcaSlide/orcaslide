@@ -203,7 +203,6 @@ class OrcaSlide {
     /**
      * Evita que al redimensionar el navegador se tengan problemas con los slides.
      *
-     * @return self Fluent interface.
      */
     get resizeSlide() {
         const CONFIG = this.configSlide;
@@ -261,7 +260,6 @@ class OrcaSlide {
      *
      * @type {Object} Resive la configuracion base.
      *
-     * @return self Fluent interface.
      */
     get validateConfig() {
         const KEYS = [
@@ -300,6 +298,11 @@ class OrcaSlide {
         return this.validateConfigAutoPlay;
     }
 
+    /**
+     * Permite validar la configuracion para el auto play.
+     *
+     * @return self Fluent interface.
+     */
     get validateConfigAutoPlay() {
         const {
             active,
