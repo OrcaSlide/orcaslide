@@ -142,7 +142,7 @@ class OrcaSlide {
      */
     startTouch() {
         const DEVICE = Utils.isMobile;
-        const { contentItem, items, swipeConfig } = this.configSlide;
+        const { contentItem, swipeConfig } = this.configSlide;
         if (DEVICE !== "desktop") {
             const SWIPE = swipeConfig;
             contentItem.addEventListener("touchstart", (action) => {
@@ -158,32 +158,14 @@ class OrcaSlide {
                 if (TOUCH) {
                     SWIPE.endX = TOUCH.screenX;
                     SWIPE.endY = TOUCH.screenY;
-                    const HZR_X1 = ((SWIPE.endX - SWIPE.min_x) > SWIPE.startX);
-                    const HZR_X2 = ((SWIPE.endX + SWIPE.min_x) < SWIPE.startX);
-                    const HZR_Y1 = (SWIPE.endY < (SWIPE.startY + SWIPE.max_y));
-                    const HZR_Y2 = (SWIPE.startY > (SWIPE.endY - SWIPE.max_y));
-
-                    const VERT_Y1 = ((SWIPE.endY - SWIPE.min_y) > SWIPE.startY);
-                    const VERT_Y2 = ((SWIPE.endY + SWIPE.min_y) < SWIPE.startY);
-                    const VERT_X1 = (SWIPE.endX < (SWIPE.startX + SWIPE.max_x));
-                    const VERT_X2 = (SWIPE.startX > (SWIPE.endX - SWIPE.max_x));
-
-                    if ((HZR_X1 || HZR_X2) && (HZR_Y1 && HZR_Y2)) {
-                        SWIPE.direction = (SWIPE.endX > SWIPE.startX) ? "right" : "left";
-                    } else if ((VERT_Y1 || VERT_Y2) && (VERT_X1 && VERT_X2)) {
-                        SWIPE.direction = (SWIPE.endY > SWIPE.startY) ? "bottom" : "top";
-                    }
+                    SWIPE.direction = Utils.getDirecctionSlide(SWIPE);
                 }
             }, false);
 
             contentItem.addEventListener("touchend", () => {
-                if (SWIPE.direction === "left" && this.configSlide.position < items) {
-                    this.autoPlay(false);
-                    this.animateSlide(true);
-                } else if (SWIPE.direction === "right" && this.configSlide.position > 0) {
-                    this.autoPlay(false);
-                    this.animateSlide(false);
-                }
+                const IS_LEFT = (SWIPE.direction === "left");
+                this.autoPlay(false);
+                this.animateSlide(IS_LEFT);
             }, false);
         }
     }
