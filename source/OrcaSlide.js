@@ -227,11 +227,11 @@ class OrcaSlide {
         const CONFIG = this.configSlide;
         const ITEM = Utils.existFields(CONFIG, "item", null);
         const ELEMENT = Utils.existFields(CONFIG, "content", null);
-
+        const JUMP = (Utils.isMobile === "desktop") ? 128 : CONFIG.jump;
         if (ITEM !== null && ELEMENT !== null) {
             window.addEventListener("resize", () => {
                 this.configSlide.scrollWidth = ELEMENT.scrollWidth;
-                this.configSlide.moveTo = Math.ceil(ITEM.offsetWidth / 256);
+                this.configSlide.moveTo = Math.ceil(ITEM.offsetWidth / JUMP);
                 this.configSlide.itemWidth = ITEM.offsetWidth;
                 const POST = ITEM.offsetWidth * this.configSlide.position;
                 Utils.moveToScroll(POST, CONFIG.contentItem, false);
