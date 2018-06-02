@@ -145,8 +145,10 @@ class OrcaSlide {
         const { contentItem, swipeConfig } = this.configSlide;
         if (DEVICE !== "desktop") {
             const SWIPE = swipeConfig;
+            let swipeLenght
             contentItem.addEventListener("touchstart", (action) => {
                 const TOUCH = Utils.existFields(action, "touches.0", null);
+                swipeLenght = 0;
                 if (TOUCH) {
                     SWIPE.startX = TOUCH.screenX;
                     SWIPE.startY = TOUCH.screenY;
@@ -157,6 +159,9 @@ class OrcaSlide {
                 const TOUCH = Utils.existFields(action, "touches.0", null);
                 if (TOUCH) {
                     SWIPE.endX = TOUCH.screenX;
+                    swipeLenght = (SWIPE.startX - SWIPE.endX >= 0)
+                        ? SWIPE.startX - SWIPE.endX
+                        : (SWIPE.startX - SWIPE.endX) * -1;
                     SWIPE.endY = TOUCH.screenY;
                     SWIPE.direction = Utils.getDirecctionSlide(SWIPE);
                 }
@@ -165,7 +170,9 @@ class OrcaSlide {
             contentItem.addEventListener("touchend", () => {
                 const IS_LEFT = (SWIPE.direction === "left");
                 this.autoPlay(false);
-                this.animateSlide(IS_LEFT);
+                if (swipeLenght > 60) {
+                    this.animateSlide(IS_LEFT);
+                }
             }, false);
         }
     }
