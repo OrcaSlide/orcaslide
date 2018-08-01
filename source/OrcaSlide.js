@@ -298,7 +298,7 @@ class OrcaSlide {
                     const NEW_CONFIG = {
                         items: ELEMENT.children.length - 1,
                         itemWidth: ITEM_WIDTH,
-                        moveTo: MOVE_TO * PIXEL_RATIO,
+                        moveTo: MOVE_TO,
                         scrollWidth: ELEMENT.scrollWidth || 0,
                         time: (this.configSlide.time * 1000) / 512,
                         item: ITEM,
