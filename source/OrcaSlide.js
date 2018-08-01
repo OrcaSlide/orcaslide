@@ -77,13 +77,22 @@ class OrcaSlide {
     }
 
     callbacks(isNext, position) {
-        const { callbacks } = this.configSlide;
+        const { callbacks, items } = this.configSlide;
         const INDEX = (isNext) ? (position - 1) : (position + 1);
         const ACTION = callbacks[`Slide${INDEX}`] || null;
         if (ACTION) {
             const LAUNCH = ((ACTION.next === isNext) || (ACTION.previus && !isNext));
+            const TYPE_ACTION = (ACTION.next === isNext) ? "next" : "previus";
+            let slide = (TYPE_ACTION === "next") ? (INDEX + 1) : (INDEX - 1);
+            slide = (slide < 0) ? items : slide;
+            slide = (slide > items) ? 0 : slide;
             try {
-                if (LAUNCH) ACTION.callback();
+                const ORCA_PARAM = {
+                    action: TYPE_ACTION,
+                    slide,
+                    lastSlide: INDEX,
+                };
+                if (LAUNCH) ACTION.callback(ORCA_PARAM);
             } catch (error) {
                 console.groupCollapsed("%c 🚫 [OrcaSlide => Error]", "color:#FFF;");
                 console.error(error);
@@ -268,6 +277,7 @@ class OrcaSlide {
             "contentItem",
         ];
         const { callbacks, jump } = this.configSlide;
+        const PIXEL_RATIO = window.devicePixelRatio;
         KEYS.forEach((item) => {
             const SELECTOR = this.configSlide[item];
             const ELEMENT = Utils.getElementDom(SELECTOR);
@@ -277,10 +287,11 @@ class OrcaSlide {
                 if (item === "contentItem") {
                     const ITEM = ELEMENT.children[0] || {};
                     const ITEM_WIDTH = ITEM.offsetWidth || 0;
+                    const MOVE_TO = Math.ceil(ITEM_WIDTH / JUMP);
                     const NEW_CONFIG = {
                         items: ELEMENT.children.length - 1,
                         itemWidth: ITEM_WIDTH,
-                        moveTo: Math.ceil(ITEM_WIDTH / JUMP),
+                        moveTo: MOVE_TO * PIXEL_RATIO,
                         scrollWidth: ELEMENT.scrollWidth || 0,
                         time: (this.configSlide.time * 1000) / 512,
                         item: ITEM,

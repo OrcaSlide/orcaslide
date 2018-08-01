@@ -56,8 +56,10 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
         {
             /**
              * Se indica la función que se desea ejecutar.
+             * Nota: Automaticamente orca slide manda para metros con informacion sobre el slide
+             * estos parametros son opcioneles
              */
-            callback: () => { console.log("PASE o REGRESE => Slide 2"); },
+            callback: (paramsByOrca) => { console.log("PASE o REGRESE => Slide 2"); },
             /**
              * Indica en que posición del slide se ejecuta el callback
              */
@@ -94,6 +96,10 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
         isInfinite: true,
     };
 ```
+
+> **Nota:** Al pasar 
+
+
 ## 🚧 Estructura HTML
 
 Nuestra estructura básica de HTML para correr el OrcaSlider consta de las siguientes partes:
