@@ -190,4 +190,4 @@ Nuestra estructura básica de HTML para correr el OrcaSlider consta de las sigui
 </center>
 
 
-[![Readme Version](https://img.shields.io/badge/Readme-v0.0.1-red.svg)](https://github.com/the-kolibri)
+[![Readme Version](https://img.shields.io/badge/Readme-v0.0.2-green.svg)](https://github.com/the-kolibri)
