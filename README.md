@@ -1,6 +1,6 @@
 # Orca Slide
 
-[![OrcaSlide badge](https://img.shields.io/badge/OrcaSlide-Develop-yellow.svg)](https://github.com/konami12/orcaslide)
+[![OrcaSlide badge](https://img.shields.io/badge/OrcaSlide-Stable-green.svg)](https://github.com/konami12/orcaslide)
 
 [![GitHub version](https://badge.fury.io/gh/konami12%2Forcaslide.svg)](https://badge.fury.io/gh/konami12%2Forcaslide)
 
@@ -67,12 +67,12 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
             /*
              * esto indica si el evento se realiza al pasar el slider.
              * por defecto el valor es false,
-            **/ 
+            **/
             next: true,
             /*
              * esto indica si el evento se realiza al retroceder un slider.
              * por defecto el valor es false,
-            **/ 
+            **/
             previus: true,
         },
         {
@@ -97,7 +97,7 @@ el paquete, a futuro se tiene contemplado permitir el manejo de más configuraci
     };
 ```
 
-> **Nota:** Al pasar 
+> **Nota:** Al pasar
 
 
 ## 🚧 Estructura HTML
@@ -171,6 +171,12 @@ Nuestra estructura básica de HTML para correr el OrcaSlider consta de las sigui
 </section><!-- /Slider -->
 
 ```
+## 🏗️ Changelog
+
+#### v1.0.2
+
+* Se estandariza funcionalidad de las **flechas** entre Slider y Carouseles
+* Se **optimiza la carga** de la funcionalidad de Orcaslide cuando es inocada
 
 ## 🌎 Team
 
@@ -184,4 +190,4 @@ Nuestra estructura básica de HTML para correr el OrcaSlider consta de las sigui
 </center>
 
 
-[![Readme Version](https://img.shields.io/badge/Readme-v0.0.1-red.svg)](https://github.com/the-kolibri)
+[![Readme Version](https://img.shields.io/badge/Readme-v0.0.2-green.svg)](https://github.com/the-kolibri)
