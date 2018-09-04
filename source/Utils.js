@@ -28,13 +28,14 @@ class Utils {
      */
     static displayToggle(element, display = "") {
         const ELEMENT = element;
+        const PARENT = element.parentNode || ELEMENT;
         let auxDisplay = display;
 
         if (display !== "") {
-            const DISPLAY = ELEMENT.style.display || "block";
+            const DISPLAY = PARENT.style.display || "block";
             auxDisplay = (DISPLAY === "block") ? "none" : "";
         }
-        ELEMENT.style.display = auxDisplay;
+        PARENT.style.display = auxDisplay;
     }
 
     /**
