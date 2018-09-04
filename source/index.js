@@ -7,10 +7,34 @@ import Config from "./orcaConfig.json";
  */
 class initOrcaSlide {
     static set config(config) {
-        const CONFIG = JSON.stringify(Config);
-        const NEW_CONFIG = JSON.parse(CONFIG);
-        Object.assign(NEW_CONFIG, config);
-        return new OrcaSlide(NEW_CONFIG);
+        this.buildOrcaStorage(config);
+        document.onreadystatechange = () => {
+            if (document.readyState === "complete") {
+                const ORCAS = JSON.parse(localStorage.orcaslide);
+                ORCAS.map((orca) => {
+                    const CONFIG = JSON.stringify(Config);
+                    const NEW_CONFIG = JSON.parse(CONFIG);
+                    Object.assign(NEW_CONFIG, orca);
+                    return new OrcaSlide(NEW_CONFIG);
+                });
+                delete localStorage.orcaslide;
+            }
+        };
+    }
+
+    /**
+     * Permite crear un storage con las invocaciones de orca.
+     *
+     * @param  {object} config Configuracion base.
+     * @return {void}
+     */
+    static buildOrcaStorage(config) {
+        if (!localStorage.orcaslide) {
+            localStorage.orcaslide = "[]";
+        }
+        const STORAGE = JSON.parse(localStorage.orcaslide);
+        STORAGE.push(config);
+        localStorage.orcaslide = JSON.stringify(STORAGE);
     }
 }
 
