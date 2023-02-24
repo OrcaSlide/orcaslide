@@ -1,0 +1,15 @@
+name: publish-npm
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: 📦 INSTALL NPM LST
+        uses: action/setup-node@v3
+        with:
+          node-version: lst/*
+      - name: 🚛 INSTALL DEPENDENCIES
+        run: npm install
