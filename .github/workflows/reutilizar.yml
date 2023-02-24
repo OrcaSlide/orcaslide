@@ -1,8 +1,5 @@
 name: reutilizar
 on:
-  push:
-    branches:
-      - develop
   workflow_call:
     inputs:
       username:
