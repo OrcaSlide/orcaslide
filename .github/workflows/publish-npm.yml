@@ -13,4 +13,4 @@ jobs:
         with:
           node-version: lts/*
       - name: 🚛 INSTALL DEPENDENCIES
-        run: ls -la
+        run: npm install
