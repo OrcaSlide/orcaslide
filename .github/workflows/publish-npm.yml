@@ -10,6 +10,6 @@ jobs:
       - name: 📦 INSTALL NPM LST
         uses: actions/setup-node@v3
         with:
-          node-version: lst/*
+          node-version: lts/*
       - name: 🚛 INSTALL DEPENDENCIES
         run: npm install
