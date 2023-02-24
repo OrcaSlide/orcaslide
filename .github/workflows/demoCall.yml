@@ -5,4 +5,4 @@ on:
       - develop
 jobs:
   call-workflow-in-local-repo:
-    uses: OrcaSlide/orcaslide/.gihub/workflows/reusable@my_tag_especial
+    uses: OrcaSlide/orcaslide/.github/workflows/reusable@my_tag_especial
