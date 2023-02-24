@@ -14,5 +14,5 @@ jobs:
   print-username:
     runs-on: ubuntu-latest
     steps:
-      - name: Vamos a imprimer los nombres del user
-        run: echo ${{ inputs.username }}
+      - name: Mostrando el nombre de usuario
+        run: echo el nombre del usuario es ${{ inputs.username }}
