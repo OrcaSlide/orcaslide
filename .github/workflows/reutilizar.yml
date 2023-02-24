@@ -6,8 +6,8 @@ on:
   workflow_call:
     inputs:
       username:
-        description: "Hola soy jorge"
-        default: "JMENDEZ"
+        description: 'Hola soy jorge'
+        default: 'JMENDEZ'
         required: false
         type: string
 jobs:
