@@ -14,3 +14,5 @@ jobs:
           node-version: lts/*
       - name: 🚛 INSTALL DEPENDENCIES
         run: npm install
+      - name: 🚀 PUBLISH
+        run: npm publish
