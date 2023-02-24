@@ -5,4 +5,4 @@ on:
       - develop
 jobs:
   call-workflow-in-local-repo:
-    uses: OrcaSlide/orcaslide/.github/workflows/reutilizar.yml@my_tag_especial
+    uses: OrcaSlide/orcaslide/.github/workflows/reutilizar.yml@develop
