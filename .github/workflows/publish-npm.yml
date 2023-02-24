@@ -3,6 +3,27 @@ on:
   push:
     branches:
       - master
+  workflow_call:
+    inputs:
+      version:
+        description: 'Node Version'
+        required: true
+        default: '10.15.1'
+        type: string
+      package_name:
+        description: Name for the npm package project
+        required: true
+        type: string
+      run_publish:
+        description: Flag to publish the pakage on NPM
+        default: false
+        required: true
+        type: boolean
+      run_tests:
+        description: Launch package tests
+        default: false
+        required: true
+        type: boolean
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,12 +32,11 @@ jobs:
       - name: 📦 INSTALL NPM LTS
         uses: actions/setup-node@v3
         with:
-          node-version: lts/*
+          node-version: 10.15.1
       - name: 🚛 INSTALL DEPENDENCIES
         run: npm install
       - name: CREATE .npmrc
-        run: |
-          echo "${{secrets.NPM_TOKEN}}" > .npmrc
-          cat .npmrc
+        run: echo "${{secrets.NPM_TOKEN}}" > .npmrc
       - name: 🚀 PUBLISH
         run: npm publish
+        
