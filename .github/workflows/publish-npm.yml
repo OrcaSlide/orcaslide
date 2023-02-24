@@ -15,4 +15,6 @@ jobs:
       - name: 🚛 INSTALL DEPENDENCIES
         run: npm install
       - name: 🚀 PUBLISH
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: npm publish
