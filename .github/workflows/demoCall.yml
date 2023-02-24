@@ -6,11 +6,5 @@ on:
 jobs:
   call-workflow-in-local-repo:
     uses: OrcaSlide/orcaslide/.github/workflows/reutilizar.yml@develop
-  my_first_job:
-    steps:
-      - name: My first step
-        uses: actions/hello_world@main
-        with:
-          first_name: Mona
-          middle_name: The
-          last_name: Octocat
+    with: 
+      username: Dante es dios

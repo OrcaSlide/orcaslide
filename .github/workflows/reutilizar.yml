@@ -13,3 +13,4 @@ jobs:
     steps:
       - name: Mostrando el nombre de usuario
         run: echo el nombre del usuario es ${{ inputs.username }}
+          
