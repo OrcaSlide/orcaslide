@@ -1,7 +1,7 @@
 name: reutilizar
 on:
-  branch:
-    push:
+  push:
+    branches:
       - develop
   workflow_call:
     inputs:
@@ -12,7 +12,7 @@ on:
         type: string
 jobs:
   print-username:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Vamos a imprimer los nombres del user
         run: echo ${{ inputs.username }}
