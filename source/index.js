@@ -7,6 +7,7 @@ import Config from "./orcaConfig.json";
  */
 class initOrcaSlide {
     static set config(config) {
+        console.log("demo");
         this.buildOrcaStorage(config);
         document.onreadystatechange = () => {
             if (document.readyState === "complete") {

@@ -2,7 +2,7 @@ name: publish-npm
 on:
   push:
     branches:
-      - master
+      - master9
   workflow_call:
     inputs:
       version:
